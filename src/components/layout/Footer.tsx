@@ -22,10 +22,12 @@ export function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Column 1: Brand */}
           <div>
-            <span className="font-heading text-lg font-bold text-white tracking-tight">
-              {siteName}
-            </span>
-            <p className="mt-4 text-sm text-[rgba(255,255,255,0.65)] leading-relaxed max-w-[300px]">
+            <img
+              src="/images/logo-primary.svg"
+              alt="WYMA New Frontiers"
+              className="h-24 w-auto"
+            />
+            <p className="mt-6 text-sm text-[rgba(255,255,255,0.65)] leading-relaxed max-w-[300px]">
               {siteTagline}
             </p>
             <div className="flex items-center gap-3 mt-5">
@@ -54,7 +56,7 @@ export function Footer() {
           </div>
 
           {/* Column 2: Quick Links */}
-          <div>
+          <div className="lg:ml-[60px]">
             <h3 className="font-heading text-sm font-semibold text-primary uppercase tracking-wider mb-5">Quick Links</h3>
             <ul className="list-none m-0 p-0 space-y-3">
               {footerQuickLinks.map((link) => (

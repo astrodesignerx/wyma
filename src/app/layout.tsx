@@ -5,6 +5,8 @@ import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { ScrollAnimationInit } from '@/components/layout/ScrollAnimationInit'
 import { BackToTop } from '@/components/layout/BackToTop'
+import { LenisProvider } from '@/components/layout/LenisProvider'
+import { HeroLightProvider } from '@/context/HeroLightContext'
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -40,11 +42,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${montserrat.variable} ${openSans.variable} ${oswald.variable} ${playfair.variable} dark h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
-        <Navbar />
-        <ScrollAnimationInit />
-        <BackToTop />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <HeroLightProvider>
+          <Navbar />
+          <ScrollAnimationInit />
+          <BackToTop />
+          <LenisProvider>
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </LenisProvider>
+        </HeroLightProvider>
       </body>
     </html>
   )

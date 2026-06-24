@@ -1,20 +1,118 @@
 'use client'
 
+import { useRef, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ArrowRight, ChevronDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
+const videoSources = [
+  '/videos/slideshow-1.webm',
+  '/videos/slideshow-2.webm',
+  '/videos/slideshow-3.webm',
+  '/videos/slideshow-4.webm',
+]
+const SLOT = 8000
+const FADE = 1500
+
 export function HeroSection() {
+  const vid0Ref = useRef<HTMLVideoElement>(null!)
+  const vid1Ref = useRef<HTMLVideoElement>(null!)
+  const vid2Ref = useRef<HTMLVideoElement>(null!)
+  const vid3Ref = useRef<HTMLVideoElement>(null!)
+
+  const cycleRef = useRef({
+    currentIdx: 0,
+    timerId: 0 as unknown as ReturnType<typeof setTimeout>,
+  })
+  const [[f0, f1, f2, f3], setFade] = useState<number[]>([1, 0, 0, 0])
+  const [, setTick] = useState(0)
+  const mounted = useRef(false)
+
+  useEffect(() => {
+    if (mounted.current) return
+    mounted.current = true
+
+    const cr = cycleRef.current
+    const players = [vid0Ref.current, vid1Ref.current, vid2Ref.current, vid3Ref.current]
+
+    players.forEach((v, i) => {
+      v.src = videoSources[i]
+      v.muted = true
+      v.playsInline = true
+      v.load()
+    })
+
+    vid0Ref.current.play().catch(() => {})
+
+    function cycle() {
+      const nextIdx = (cr.currentIdx + 1) % videoSources.length
+      const nextPlayer = players[nextIdx]
+
+      nextPlayer.currentTime = 0
+
+      cr.timerId = setTimeout(() => {
+        const newFade = [0, 0, 0, 0]
+        newFade[nextIdx] = 1
+        setFade([...newFade])
+
+        nextPlayer.play().catch(() => {})
+
+        cr.timerId = setTimeout(() => {
+          players[cr.currentIdx].pause()
+          cr.currentIdx = nextIdx
+          setTick((t) => t + 1)
+          cycle()
+        }, FADE)
+      }, SLOT - FADE)
+    }
+
+    cr.timerId = setTimeout(cycle, SLOT - FADE)
+
+    return () => {
+      clearTimeout(cr.timerId as unknown as number)
+    }
+  }, [])
+
+  const sectionBg = 'bg-black'
+
   return (
-    <section
-      className="relative min-h-dvh flex items-center overflow-hidden"
-      style={{
-        backgroundImage: 'url(/images/hero-bg.jpg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-      }}
-    >
+    <section className={`relative min-h-dvh flex items-center overflow-hidden ${sectionBg}`}>
+      {/* Video slideshow layer */}
+      <div className="absolute inset-0 z-0">
+        <video
+          ref={vid0Ref}
+          muted
+          playsInline
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms]"
+          style={{ opacity: f0 }}
+        />
+        <video
+          ref={vid1Ref}
+          muted
+          playsInline
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms]"
+          style={{ opacity: f1 }}
+        />
+        <video
+          ref={vid2Ref}
+          muted
+          playsInline
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms]"
+          style={{ opacity: f2 }}
+        />
+        <video
+          ref={vid3Ref}
+          muted
+          playsInline
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms]"
+          style={{ opacity: f3 }}
+        />
+      </div>
+
       {/* Dark overlay */}
       <div
         className="absolute inset-0 z-[1]"
@@ -48,9 +146,9 @@ export function HeroSection() {
           <span className="inline-block font-heading text-[11px] font-semibold tracking-[0.15em] uppercase text-[#EECB27] mb-3">
             NAIROBI BASED CONSULTANCY
           </span>
-          <h1 className="font-heading text-[3.25rem] leading-[1.15] font-bold mb-6">
+          <h1 className="font-heading text-[3.25rem] leading-[1.15] font-bold mb-6 text-white">
             Accelerating Innovation Through{' '}
-            <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            <span className="bg-gradient-to-br from-primary via-primary to-secondary bg-[length:200%_200%] bg-clip-text text-transparent animate-gradient-slide">
               Strategic Leadership
             </span>
           </h1>
@@ -58,8 +156,12 @@ export function HeroSection() {
             We help organisations in Kenya strengthen strategy, improve performance, and deliver measurable impact.
           </p>
           <Link href="/services">
-            <Button size="lg" className="group text-base px-8 py-6 transition-all duration-300 hover:bg-gradient-to-br hover:from-primary hover:to-secondary">
-              Explore Our Services <ArrowRight className="w-4 h-4 ml-2 transition-all duration-300 group-hover:animate-arrow-float" />
+            <Button size="lg" className="group relative overflow-hidden text-base px-8 py-6">
+              <span className="absolute inset-0 bg-gradient-to-br from-primary to-secondary opacity-0 transition-opacity duration-1000 group-hover:opacity-100 pointer-events-none" />
+              <span className="relative z-10 inline-flex items-center gap-2">
+                Explore Our Services
+                <ArrowRight className="w-4 h-4 transition-all duration-1000 group-hover:translate-x-1" />
+              </span>
             </Button>
           </Link>
         </div>

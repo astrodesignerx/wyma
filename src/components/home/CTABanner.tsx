@@ -17,7 +17,7 @@ export function CTABanner() {
           </div>
           <div className="flex-shrink-0">
             <Link href="/services">
-              <Button className="bg-black text-white border-black hover:bg-[#222] hover:text-white px-8 py-6 text-base">
+              <Button className="bg-black text-white border-black hover:bg-white hover:text-black hover:border-transparent px-8 py-6 text-base">
                 EXPLORE OUR SERVICES <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>

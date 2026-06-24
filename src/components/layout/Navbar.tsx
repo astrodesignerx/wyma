@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu, X, ChevronDown } from 'lucide-react'
 import { useNavbarScroll } from '@/hooks/useNavbarScroll'
+import { useHeroLight } from '@/context/HeroLightContext'
 import { navLinks, serviceDropdownItems, homeSectionItems, aboutSectionItems } from '@/data/constants'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
@@ -43,7 +44,8 @@ export function Navbar() {
     return pathname.startsWith(href.split('#')[0])
   }
 
-  const isLightHero = ['/resources'].includes(pathname)
+  const { isLight: heroLight } = useHeroLight()
+  const isLightHero = ['/resources'].includes(pathname) || heroLight
   const navText = (active: boolean, whiteDefault = false) => {
     if (active) return 'text-primary'
     if (!scrolled && isLightHero) return 'text-black'
@@ -52,19 +54,27 @@ export function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
         scrolled ? 'bg-[rgba(18,18,18,0.85)] backdrop-blur-md shadow-[0_2px_20px_rgba(0,0,0,0.3)]' : 'bg-transparent'
       }`}
       role="navigation"
       aria-label="Main navigation"
     >
-      <div className="flex items-center justify-between w-full h-[102px]">
+      <div className="mx-auto max-w-[1200px] px-6 flex items-center justify-between w-full h-[102px]">
         {/* Logo - gutter left */}
-        <div className="pl-32 lg:pl-48 flex-shrink-0">
-          <Link href="/" className="flex items-center no-underline">
-            <span className="font-heading text-lg font-bold tracking-tight" style={{ color: !scrolled && isLightHero ? '#000' : '#fff' }}>
-              WYMA <span className="text-primary">New Frontiers</span>
-            </span>
+        <div className="flex-shrink-0">
+          <Link href="/" className="flex items-center no-underline gap-3">
+            <img
+              src="/images/logo-icon.svg"
+              alt=""
+              className="h-10 w-auto"
+            />
+            <img
+              src="/images/logo-text.svg"
+              alt="WYMA New Frontiers"
+              className="h-[32px] w-auto self-center transition-[filter] duration-500"
+              style={{ filter: !scrolled && isLightHero ? 'brightness(0)' : 'none' }}
+            />
           </Link>
         </div>
 
@@ -82,10 +92,18 @@ export function Navbar() {
             >
               Home <ChevronDown className="w-3.5 h-3.5" />
             </Link>
-            {homeDropdownOpen && (
-              <ul className="absolute top-full left-0 min-w-[200px] bg-surface border border-[--color-border] rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-2 z-50 list-none m-0" style={{ isolation: 'isolate' }}>
-                {homeSectionItems.map((item) => (
-                  <li key={item.href}>
+            <ul
+              className={`absolute top-full left-0 min-w-[200px] bg-surface border border-[--color-border] rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-2 z-50 list-none m-0 transition-all duration-500 ${
+                homeDropdownOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'
+              }`}
+              style={{ isolation: 'isolate' }}
+            >
+              {homeSectionItems.map((item, i) => (
+                <li
+                  key={item.href}
+                  style={{ animationDelay: `${i * 100}ms` }}
+                  className={homeDropdownOpen ? 'animate-[fadeInUp_0.5s_ease-out_both]' : undefined}
+                >
                     <button
                       onClick={() => {
                         setHomeDropdownOpen(false)
@@ -98,8 +116,7 @@ export function Navbar() {
                   </li>
                 ))}
               </ul>
-            )}
-          </li>
+            </li>
           {/* About Dropdown */}
           <li
             className="relative"
@@ -112,10 +129,18 @@ export function Navbar() {
             >
               About <ChevronDown className="w-3.5 h-3.5" />
             </Link>
-            {aboutDropdownOpen && (
-              <ul className="absolute top-full left-0 min-w-[200px] bg-surface border border-[--color-border] rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-2 z-50 list-none m-0" style={{ isolation: 'isolate' }}>
-                {aboutSectionItems.map((item) => (
-                  <li key={item.href}>
+            <ul
+              className={`absolute top-full left-0 min-w-[200px] bg-surface border border-[--color-border] rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-2 z-50 list-none m-0 transition-all duration-500 ${
+                aboutDropdownOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'
+              }`}
+              style={{ isolation: 'isolate' }}
+            >
+              {aboutSectionItems.map((item, i) => (
+                <li
+                  key={item.href}
+                  style={{ animationDelay: `${i * 100}ms` }}
+                  className={aboutDropdownOpen ? 'animate-[fadeInUp_0.5s_ease-out_both]' : undefined}
+                >
                     <button
                       onClick={() => {
                         setAboutDropdownOpen(false)
@@ -128,8 +153,7 @@ export function Navbar() {
                   </li>
                 ))}
               </ul>
-            )}
-          </li>
+            </li>
           {/* Services Dropdown */}
           <li
             className="relative"
@@ -142,10 +166,18 @@ export function Navbar() {
             >
               Services <ChevronDown className="w-3.5 h-3.5" />
             </Link>
-            {dropdownOpen && (
-              <ul className="absolute top-full left-0 min-w-[220px] bg-surface border border-[--color-border] rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-2 z-50 list-none m-0" style={{ isolation: 'isolate' }}>
-                {serviceDropdownItems.map((item) => (
-                  <li key={item.href}>
+            <ul
+              className={`absolute top-full left-0 min-w-[220px] bg-surface border border-[--color-border] rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-2 z-50 list-none m-0 transition-all duration-500 ${
+                dropdownOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'
+              }`}
+              style={{ isolation: 'isolate' }}
+            >
+              {serviceDropdownItems.map((item, i) => (
+                <li
+                  key={item.href}
+                  style={{ animationDelay: `${i * 100}ms` }}
+                  className={dropdownOpen ? 'animate-[fadeInUp_0.5s_ease-out_both]' : undefined}
+                >
                     <Link
                       href={item.href}
                       className="block text-sm no-underline px-4 py-2.5 rounded-md transition-colors duration-200 hover:bg-[rgba(255,255,255,0.05)] hover:text-primary text-white"
@@ -155,8 +187,7 @@ export function Navbar() {
                   </li>
                 ))}
               </ul>
-            )}
-          </li>
+            </li>
           {navLinks.filter(l => l.label !== 'Home' && l.label !== 'About').map((link) => (
             <li key={link.href}>
               <Link
@@ -170,10 +201,11 @@ export function Navbar() {
         </ul>
 
         {/* Right side - gutter right */}
-        <div className="pr-32 lg:pr-48 flex items-center gap-4 flex-shrink-0">
+        <div className="flex items-center gap-4 flex-shrink-0">
           <Link href="/contact" className="hidden lg:block">
-            <Button className="rounded-md text-white px-6 py-5 text-sm transition-all duration-300 hover:bg-gradient-to-br hover:from-primary hover:to-secondary">
-              Request Consultation
+            <Button className="group relative overflow-hidden rounded-md text-white px-6 py-5 text-sm">
+              <span className="absolute inset-0 bg-gradient-to-br from-primary to-secondary opacity-0 transition-opacity duration-1000 group-hover:opacity-100 pointer-events-none" />
+              <span className="relative z-10">Request Consultation</span>
             </Button>
           </Link>
 
@@ -265,8 +297,9 @@ export function Navbar() {
                 ))}
                 <li className="mt-4">
                   <Link href="/contact" className="block">
-                    <Button className="w-full rounded-md text-white px-6 py-5 text-sm transition-all duration-300 hover:bg-gradient-to-br hover:from-primary hover:to-secondary">
-                      Request Consultation
+                    <Button className="group relative overflow-hidden w-full rounded-md text-white px-6 py-5 text-sm">
+                      <span className="absolute inset-0 bg-gradient-to-br from-primary to-secondary opacity-0 transition-opacity duration-1000 group-hover:opacity-100 pointer-events-none" />
+                      <span className="relative z-10">Request Consultation</span>
                     </Button>
                   </Link>
                 </li>

@@ -1,4 +1,5 @@
 import { HeroSection } from '@/components/home/HeroSection'
+import { LoadingScreen } from '@/components/home/LoadingScreen'
 import { AboutSnippet } from '@/components/home/AboutSnippet'
 import { ServicesGrid } from '@/components/home/ServicesGrid'
 import { ImpactBanner } from '@/components/home/ImpactBanner'
@@ -9,6 +10,7 @@ import { CTABanner } from '@/components/home/CTABanner'
 export default function HomePage() {
   return (
     <>
+      <LoadingScreen />
       <HeroSection />
       <AboutSnippet />
       <ServicesGrid />

@@ -28,7 +28,7 @@ export function TeamSection() {
                     <img
                       src={m.image}
                       alt={m.name}
-                      className="w-full h-full object-cover transition-all duration-700 grayscale group-hover:grayscale-0"
+                      className="w-full h-full object-cover object-top transition-all duration-700 grayscale group-hover:grayscale-0"
                     />
                 </div>
                 <div className="p-6">

@@ -1,6 +1,3 @@
-'use client'
-
-import { useState } from 'react'
 import { coreValues } from '@/data/constants'
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -18,39 +15,6 @@ const iconMap: Record<string, React.ReactNode> = {
   ),
 }
 
-function ValueCard({ title, description, icon, index }: { title: string; description: string; icon: string; index: number }) {
-  const [pos, setPos] = useState({ x: 50, y: 50 })
-
-  return (
-    <div
-      className={`group relative rounded-xl p-8 border border-[--color-card-border] bg-surface overflow-hidden fade-in-scale delay-${index + 1}`}
-      onMouseMove={(e) => {
-        const rect = e.currentTarget.getBoundingClientRect()
-        setPos({
-          x: ((e.clientX - rect.left) / rect.width) * 100,
-          y: ((e.clientY - rect.top) / rect.height) * 100,
-        })
-      }}
-    >
-      {/* Spotlight glow */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{
-          background: `radial-gradient(circle at ${pos.x}% ${pos.y}%, rgba(100,175,71,0.35) 0%, rgba(100,175,71,0.1) 30%, transparent 60%)`,
-          filter: 'blur(20px)',
-        }}
-      />
-      <div className="relative z-[1]">
-        <div className="w-10 h-10 rounded-[10px] bg-[rgba(100,175,71,0.15)] text-primary flex items-center justify-center mb-5">
-          {iconMap[icon]}
-        </div>
-        <h3 className="font-heading text-lg font-semibold text-white mb-3">{title}</h3>
-        <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
-      </div>
-    </div>
-  )
-}
-
 export function CoreValues() {
   return (
     <section className="py-24" id="core-values">
@@ -63,7 +27,25 @@ export function CoreValues() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {coreValues.map((v, i) => (
-            <ValueCard key={v.title} title={v.title} description={v.description} icon={v.icon} index={i} />
+            <div
+              key={v.title}
+              className={`group relative rounded-xl p-8 border border-[--color-card-border] bg-surface overflow-hidden transition-all duration-500 hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)] hover:[transform:perspective(800px)_rotateY(-2deg)_rotateX(1deg)] fade-in-scale delay-${i + 1}`}
+            >
+              {/* Hover glow from below */}
+              <div
+                className="absolute bottom-0 left-0 w-full h-[65%] pointer-events-none opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                style={{
+                  background: 'linear-gradient(to top, rgba(100,175,71,0.12), rgba(100,175,71,0.04), transparent)',
+                }}
+              />
+              <div className="relative z-[1]">
+                <div className="w-10 h-10 rounded-[10px] bg-[rgba(100,175,71,0.15)] text-primary flex items-center justify-center mb-5">
+                  {iconMap[v.icon]}
+                </div>
+                <h3 className="font-heading text-lg font-semibold text-white mb-3">{v.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{v.description}</p>
+              </div>
+            </div>
           ))}
         </div>
       </div>

@@ -211,9 +211,9 @@ export const coreValues = [
 ]
 
 export const teamMembers: TeamMember[] = [
-  { name: 'Winfred Y. Mwangi', role: 'Lead Consultant & Managing Director', bio: 'Over 15 years of experience in strategic advisory, M&E, and organisational development across East Africa.', image: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop' },
-  { name: 'James Ochieng', role: 'Senior Strategy Advisor', bio: 'Specialist in corporate strategy, operational efficiency, and public sector reform with 12+ years of experience.', image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop' },
-  { name: 'Grace Akinyi', role: 'Head of Research & Evaluation', bio: 'Expert in mixed-methods research, impact evaluation, and data systems with a background in international development.', image: 'https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop' },
+  { name: 'Winfred Y. Mwangi', role: 'Lead Consultant & Managing Director', bio: 'Over 15 years of experience in strategic advisory, M&E, and organisational development across East Africa.', image: '/images/team-1.png' },
+  { name: 'James Ochieng', role: 'Senior Strategy Advisor', bio: 'Specialist in corporate strategy, operational efficiency, and public sector reform with 12+ years of experience.', image: '/images/team-3.png' },
+  { name: 'Grace Akinyi', role: 'Head of Research & Evaluation', bio: 'Expert in mixed-methods research, impact evaluation, and data systems with a background in international development.', image: '/images/team-2.png' },
 ]
 
 export const faqs: FAQItem[] = [

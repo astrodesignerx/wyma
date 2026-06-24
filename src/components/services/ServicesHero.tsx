@@ -33,14 +33,6 @@ export function ServicesHero() {
             WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, #000 20%, #000 80%, transparent 100%)',
           }}
         >
-          {/* Green glow band — color-dodge keeps dark bg untouched, only brightens text */}
-          <div
-            className="absolute inset-0 z-[1] pointer-events-none"
-            style={{
-              background: 'linear-gradient(to bottom, transparent 35%, rgba(100,175,71,0.5) 48%, rgba(100,175,71,0.6) 50%, rgba(100,175,71,0.5) 52%, transparent 65%)',
-              mixBlendMode: 'color-dodge',
-            }}
-          />
           <div className="flex flex-col items-center w-full" style={{ animation: 'scroll-up 35s linear infinite', willChange: 'transform', backfaceVisibility: 'hidden' }}>
             {[
               'OPERATIONS', 'RESEARCH', 'STRATEGY', 'INTELLIGENCE',
@@ -62,7 +54,7 @@ export function ServicesHero() {
             ].map((word, i) => (
               <span
                 key={`${word}-${i}`}
-                className="font-marquee text-[3.25rem] md:text-5xl font-semibold text-[rgba(255,255,255,0.06)] uppercase tracking-[3px] whitespace-nowrap leading-none py-2"
+                className="font-marquee text-[4rem] md:text-6xl font-semibold text-[rgba(255,255,255,0.06)] uppercase tracking-[3px] whitespace-nowrap leading-none py-4"
               >
                 {word}
               </span>

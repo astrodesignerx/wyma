@@ -1,4 +1,32 @@
+'use client'
+
 import { stats } from '@/data/constants'
+import { useAnimatedCounter } from '@/hooks/useAnimatedCounter'
+
+function StatCard({ target, suffix, label }: { target: number; suffix: string; label: string }) {
+  const { display, ref } = useAnimatedCounter({ target, suffix })
+
+  return (
+    <div
+      ref={ref}
+      className="rounded-xl p-8 bg-white border border-[#e0e0e0]"
+    >
+      <div className="font-heading text-5xl font-bold text-primary mb-2">
+        {display}
+      </div>
+      <div className="font-heading text-sm font-semibold tracking-wider text-[#121212] uppercase mb-2">
+        {label}
+      </div>
+      <p className="text-sm text-[#555] leading-relaxed font-semibold">
+        {label === 'Years of Experience'
+          ? 'Decade-long track record of excellence in the regional market.'
+          : label === 'Projects Delivered'
+            ? 'Successful implementation across diverse sectors and counties.'
+            : 'Trusted partner for global NGOs, corporates, and public entities.'}
+      </p>
+    </div>
+  )
+}
 
 export function AboutSnippet() {
   return (
@@ -33,24 +61,7 @@ export function AboutSnippet() {
         {/* Bottom: three stat cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {stats.slice(0, 3).map((stat) => (
-            <div
-              key={stat.label}
-              className="rounded-xl p-8 bg-white border border-[#e0e0e0]"
-            >
-              <div className="font-heading text-5xl font-bold text-primary mb-2">
-                {stat.target}{stat.suffix}
-              </div>
-              <div className="font-heading text-sm font-semibold tracking-wider text-[#121212] uppercase mb-2">
-                {stat.label}
-              </div>
-              <p className="text-sm text-[#555] leading-relaxed font-semibold">
-                {stat.label === 'Years of Experience'
-                  ? 'Decade-long track record of excellence in the regional market.'
-                  : stat.label === 'Projects Delivered'
-                    ? 'Successful implementation across diverse sectors and counties.'
-                    : 'Trusted partner for global NGOs, corporates, and public entities.'}
-              </p>
-            </div>
+            <StatCard key={stat.label} target={stat.target} suffix={stat.suffix} label={stat.label} />
           ))}
         </div>
       </div>

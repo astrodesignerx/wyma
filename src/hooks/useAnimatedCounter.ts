@@ -35,22 +35,18 @@ export function useAnimatedCounter({ target, suffix = '+' }: UseAnimatedCounterO
 
     function animate() {
       const duration = 2000
-      const steps = 60
-      const increment = target / steps
-      const stepTime = duration / steps
-      let current = 0
+      const startTime = performance.now()
 
-      function tick() {
-        current += increment
-        if (current >= target) {
-          setDisplay(`${target}${suffix}`)
-          return
-        }
-        setDisplay(`${Math.floor(current)}${suffix}`)
-        requestAnimationFrame(() => setTimeout(tick, stepTime))
+      function tick(now: number) {
+        const elapsed = now - startTime
+        const t = Math.min(elapsed / duration, 1)
+        const eased = 1 - Math.pow(1 - t, 3)
+        const current = Math.round(eased * target)
+        setDisplay(`${current}${suffix}`)
+        if (t < 1) requestAnimationFrame(tick)
       }
 
-      tick()
+      requestAnimationFrame(tick)
     }
   }, [target, suffix])
 

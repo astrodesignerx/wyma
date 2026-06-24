@@ -60,6 +60,7 @@
   --animate-marquee-scroll: marquee-scroll 20s linear infinite;
   --animate-arrow-float: arrow-float 2s ease-in-out infinite;
   --animate-float-vertical: float-vertical 6s ease-in-out infinite;
+  --animate-gradient-slide: gradient-slide 10s ease-in-out infinite;
 }
 
 @keyframes glow-pulse {
@@ -92,6 +93,43 @@
   0%, 100% { transform: translateX(0); }
   50% { transform: translateX(6px); }
 }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes gradient-slide {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Tilt card — 3D perspective, green glow overlay, border animation */
+.mission-vision-card {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  transition: transform 2.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 2.5s ease-out, border-color 2.5s ease-out;
+}
+
+.mission-vision-card:hover {
+  transform: rotateX(-3deg) rotateY(3deg) translateY(-4px) scale(1.01);
+  box-shadow: 0 0 0 1px rgba(100, 175, 71, 0.4), 0 10px 25px rgba(0, 0, 0, 0.25);
+  border-color: rgba(100, 175, 71, 0.4);
+}
+
+.mission-vision-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at 20% 20%, rgba(100, 175, 71, 0.15), transparent 60%);
+  opacity: 0;
+  transition: opacity 2.5s ease-out;
+  pointer-events: none;
+}
+
+.mission-vision-card:hover::before {
+  opacity: 1;
+}
 
 :root {
   --background: #121212;
@@ -114,7 +152,7 @@
   --border: #444444;
   --input: #444444;
   --ring: #64AF47;
-  --radius: 0.625rem;
+  --radius: 0.3125rem;
   --chart-1: #64AF47;
   --chart-2: #AECF37;
   --chart-3: #EECB27;
@@ -151,7 +189,7 @@
   --border: #444444;
   --input: #444444;
   --ring: #64AF47;
-  --radius: 0.625rem;
+  --radius: 0.3125rem;
   --chart-1: #64AF47;
   --chart-2: #AECF37;
   --chart-3: #EECB27;

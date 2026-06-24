@@ -78,63 +78,68 @@ export function ContactForm() {
           <label htmlFor="fullName" className="block text-sm font-medium text-[#555] mb-1.5">
             Full Name <span className="text-destructive">*</span>
           </label>
-          <Input
-            id="fullName"
-            value={form.fullName}
-            onChange={(e) => handleChange('fullName', e.target.value)}
-            className="bg-[#f0f0f0] border-[#d0d0d0] text-[#121212]"
-            placeholder="Your full name"
-          />
+            <Input
+              id="fullName"
+              value={form.fullName}
+              onChange={(e) => handleChange('fullName', e.target.value)}
+              className="bg-[rgba(100,175,71,0.08)] border-[#d0d0d0] text-[#121212]"
+              placeholder="Your full name"
+            />
         </div>
         <div className="form-group">
           <label htmlFor="organisation" className="block text-sm font-medium text-[#555] mb-1.5">
             Organisation
           </label>
-          <Input
-            id="organisation"
-            value={form.organisation}
-            onChange={(e) => handleChange('organisation', e.target.value)}
-            className="bg-[#f0f0f0] border-[#d0d0d0] text-[#121212]"
-            placeholder="Your organisation"
-          />
+            <Input
+              id="organisation"
+              value={form.organisation}
+              onChange={(e) => handleChange('organisation', e.target.value)}
+              className="bg-[rgba(100,175,71,0.08)] border-[#d0d0d0] text-[#121212]"
+              placeholder="Your organisation"
+            />
         </div>
         <div className="form-group">
           <label htmlFor="email" className="block text-sm font-medium text-[#555] mb-1.5">
             Email Address <span className="text-destructive">*</span>
           </label>
-          <Input
-            id="email"
-            type="email"
-            value={form.email}
-            onChange={(e) => handleChange('email', e.target.value)}
-            className="bg-[#f0f0f0] border-[#d0d0d0] text-[#121212]"
-            placeholder="you@example.com"
-          />
+            <Input
+              id="email"
+              type="email"
+              value={form.email}
+              onChange={(e) => handleChange('email', e.target.value)}
+              className="bg-[rgba(100,175,71,0.08)] border-[#d0d0d0] text-[#121212]"
+              placeholder="you@example.com"
+            />
         </div>
         <div className="form-group">
           <label htmlFor="phone" className="block text-sm font-medium text-[#555] mb-1.5">
             Phone Number
           </label>
-          <Input
-            id="phone"
-            type="tel"
-            value={form.phone}
-            onChange={(e) => handleChange('phone', e.target.value)}
-            className="bg-[#f0f0f0] border-[#d0d0d0] text-[#121212]"
-            placeholder="+254 7XX XXX XXX"
-          />
+            <Input
+              id="phone"
+              type="tel"
+              value={form.phone}
+              onChange={(e) => handleChange('phone', e.target.value)}
+              className="bg-[rgba(100,175,71,0.08)] border-[#d0d0d0] text-[#121212]"
+              placeholder="+254 7XX XXX XXX"
+            />
         </div>
         <div className="form-group sm:col-span-2">
           <label htmlFor="service" className="block text-sm font-medium text-[#555] mb-1.5">
             Service Interested In
           </label>
           <Select value={form.service} onValueChange={(v) => handleChange('service', v ?? '')}>
-            <SelectTrigger className="bg-[#f0f0f0] border-[#d0d0d0] text-[#121212]">
+            <SelectTrigger className="bg-[rgba(100,175,71,0.08)] border-[#d0d0d0] text-[#121212]">
               <SelectValue placeholder="Select a service" />
             </SelectTrigger>
             <SelectContent className="bg-white border-[#e0e0e0] text-[#121212]">
-              {serviceDetails.map((svc) => (
-                <SelectItem key={svc.id} value={svc.title}>{svc.title}</SelectItem>
+              {serviceDetails.map((svc, i) => (
+                <SelectItem
+                  key={svc.id}
+                  value={svc.title}
+                  style={{ animationDelay: `${i * 50}ms` }}
+                  className="animate-[fadeInUp_0.3s_ease-out_both]"
+                >{svc.title}</SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -148,7 +153,7 @@ export function ContactForm() {
             rows={5}
             value={form.message}
             onChange={(e) => handleChange('message', e.target.value)}
-            className="bg-[#f0f0f0] border-[#d0d0d0] text-[#121212] resize-none"
+            className="bg-[rgba(100,175,71,0.08)] border-[#d0d0d0] text-[#121212] resize-none"
             placeholder="Tell us about your project..."
           />
         </div>
@@ -161,7 +166,7 @@ export function ContactForm() {
       <Button
         type="submit"
         disabled={status === 'sending'}
-        className="mt-6 px-8 py-6 text-base transition-all duration-300 hover:bg-gradient-to-br hover:from-primary hover:to-secondary"
+        className="mt-6 px-8 py-6 text-base hover:bg-gradient-to-br hover:from-primary hover:to-secondary"
       >
         {status === 'sending' ? 'SENDING...' : status === 'sent' ? 'MESSAGE SENT!' : (
           <>

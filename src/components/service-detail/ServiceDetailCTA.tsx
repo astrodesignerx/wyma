@@ -17,7 +17,7 @@ export function ServiceDetailCTA() {
           </div>
           <div className="flex flex-col sm:flex-row gap-4 flex-shrink-0">
             <Link href="/contact">
-              <Button className="bg-black text-white border-black hover:bg-[#222] hover:text-white px-8 py-6 text-base">
+              <Button className="bg-black text-white border-black hover:bg-white hover:text-black hover:border-transparent px-8 py-6 text-base">
                 SCHEDULE A CONSULTATION
               </Button>
             </Link>

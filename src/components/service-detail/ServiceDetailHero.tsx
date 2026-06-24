@@ -45,7 +45,7 @@ export function ServiceDetailHero({ data }: { data: ServicePageData }) {
           {data.heroTagline}
         </p>
         <Link href="/contact">
-          <Button size="lg" className="text-base px-8 py-6 transition-all duration-300 hover:bg-gradient-to-br hover:from-primary hover:to-secondary">
+          <Button size="lg" className="text-base px-8 py-6 hover:bg-gradient-to-br hover:from-primary hover:to-secondary">
             REQUEST THIS SERVICE
           </Button>
         </Link>
