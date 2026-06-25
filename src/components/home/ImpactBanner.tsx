@@ -6,7 +6,20 @@ import { Star, ExternalLink } from 'lucide-react'
 const logoFiles = Array.from({ length: 14 }, (_, i) => `/images/logos/WYMA Logos-${String(i + 1).padStart(2, '0')}.svg`)
 
 const clientUrls: Record<number, { name: string; url: string; previewImage: string }> = {
+  0: { name: 'International Labour Organization', url: 'https://www.ilo.org', previewImage: 'https://www.ilo.org/themes/custom/ilo/node_modules/@ilo-org/brand-assets/dist/assets/favicon/maskable-icon-512x512.png' },
+  1: { name: 'FIDA Kenya', url: 'https://fidakenya.org', previewImage: 'http://fidakenya.org/wp-content/uploads/2025/06/Judy-Thongori-Medium-1024x576.png' },
+  2: { name: 'Cheshire Disability Services', url: 'https://cheshiredisabilityservices.org', previewImage: 'https://www.google.com/s2/favicons?domain=cheshiredisabilityservices.org&sz=64' },
+  3: { name: 'EY', url: 'https://www.ey.com', previewImage: 'https://www.ey.com/content/dam/ey-unified-site/ey-com/en-gl/campaigns/fy25-splash/images/ey-big-sun-at-dawn-on-the-sea-with-beautiful-reflections-and-flocks-of-birds-in-flight-static-no-zoom-article-v3-thin.jpg' },
+  4: { name: 'DRC', url: 'https://drc.ngo', previewImage: 'https://www.google.com/s2/favicons?domain=drc.ngo&sz=64' },
+  5: { name: 'DSW', url: 'https://www.dsw.org', previewImage: 'https://www.dsw.org/wp-content/uploads/2023/10/home_MD_headerimage.webp' },
+  6: { name: 'Terre des Hommes', url: 'https://terredeshommes.org', previewImage: 'https://www.google.com/s2/favicons?domain=terredeshommes.org&sz=64' },
+  7: { name: 'SUPKEM', url: 'https://www.supkem.org', previewImage: 'https://www.google.com/s2/favicons?domain=supkem.org&sz=64' },
+  8: { name: 'ActionAid', url: 'https://actionaid.org', previewImage: 'https://www.google.com/s2/favicons?domain=actionaid.org&sz=64' },
   9: { name: 'The Palladium Group', url: 'https://thepalladiumgroup.com/', previewImage: 'https://www.thepalladiumgroup.com/custom/images/Pal-OG.jpg' },
+  10: { name: 'KISC', url: 'https://kisc.sc.ke', previewImage: 'https://kisc.sc.ke/wp-content/uploads/2025/09/COS_0479-scaled.jpg' },
+  11: { name: 'IOM Kenya', url: 'https://kenya.iom.int', previewImage: 'https://kenya.iom.int/sites/g/files/tmzbdl926/files/styles/social_media/public/banner/2026-04/banners-drafts_converted14.jpg?h=9b485a40&itok=aYrQ_Gnr' },
+  12: { name: 'Catholic Relief Services', url: 'https://www.crs.org', previewImage: 'https://www.crs.org/sites/default/files/dam/ijndecu0ks/test-hero_ssu2014088711_2880x1508.jpg' },
+  13: { name: 'Nairobits', url: 'https://www.nairobits.com', previewImage: 'https://www.google.com/s2/favicons?domain=nairobits.com&sz=64' },
 }
 
 const POPUP_HEIGHT = 180
