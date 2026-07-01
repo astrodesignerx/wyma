@@ -25,7 +25,7 @@ export function Footer() {
             <img
               src="/images/logo-primary.svg"
               alt="WYMA New Frontiers"
-              className="h-24 w-auto"
+              className="h-[86px] w-auto"
             />
             <p className="mt-6 text-sm text-[rgba(255,255,255,0.65)] leading-relaxed max-w-[300px]">
               {siteTagline}
@@ -109,11 +109,8 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="mt-12 pt-6 border-t border-solid border-[--color-border] flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[rgba(255,255,255,0.45)]">
-          <span>&copy; {new Date().getFullYear()} {siteName}. All rights reserved.</span>
-          <div className="flex items-center gap-4">
-            <a href="#" className="text-[rgba(255,255,255,0.45)] no-underline transition-colors duration-200 hover:text-primary">Privacy Policy</a>
-            <a href="#" className="text-[rgba(255,255,255,0.45)] no-underline transition-colors duration-200 hover:text-primary">Terms of Service</a>
-          </div>
+          <span>&copy; {new Date().getFullYear()} {siteName}.</span>
+          <span>All rights reserved.</span>
         </div>
       </div>
     </footer>

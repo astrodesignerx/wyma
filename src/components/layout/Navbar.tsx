@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, X, ChevronDown } from 'lucide-react'
+import { Menu, X, ChevronDown, LayoutDashboard, Search, Lightbulb, ClipboardList, Shield, GraduationCap } from 'lucide-react'
 import { useNavbarScroll } from '@/hooks/useNavbarScroll'
 import { useHeroLight } from '@/context/HeroLightContext'
 import { navLinks, serviceDropdownItems, homeSectionItems, aboutSectionItems } from '@/data/constants'
@@ -45,11 +45,27 @@ export function Navbar() {
   }
 
   const { isLight: heroLight } = useHeroLight()
-  const isLightHero = ['/resources'].includes(pathname) || heroLight
+  const isLightHero = ['/resources', '/approach'].includes(pathname) || heroLight
   const navText = (active: boolean, whiteDefault = false) => {
     if (active) return 'text-primary'
     if (!scrolled && isLightHero) return 'text-black'
     return whiteDefault ? 'text-white' : 'text-[--color-muted]'
+  }
+
+  const iconMap = {
+    'layout-dashboard': LayoutDashboard,
+    'search': Search,
+    'lightbulb': Lightbulb,
+    'clipboard-list': ClipboardList,
+    'shield': Shield,
+    'graduation-cap': GraduationCap,
+  } as const
+
+  const accentStyles: Record<string, { bg: string; text: string }> = {
+    primary: { bg: 'rgba(100,175,71,0.2)', text: '#64AF47' },
+    secondary: { bg: 'rgba(174,207,55,0.2)', text: '#AECF37' },
+    accent: { bg: 'rgba(238,203,39,0.2)', text: '#EECB27' },
+    danger: { bg: 'rgba(225,50,57,0.2)', text: '#E13239' },
   }
 
   return (
@@ -93,7 +109,7 @@ export function Navbar() {
               Home <ChevronDown className="w-3.5 h-3.5" />
             </Link>
             <ul
-              className={`absolute top-full left-0 min-w-[200px] bg-surface border border-[--color-border] rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-2 z-50 list-none m-0 transition-all duration-500 ${
+              className={`absolute top-full left-0 min-w-[200px] bg-surface rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-2 z-50 list-none m-0 transition-all duration-500 ${
                 homeDropdownOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'
               }`}
               style={{ isolation: 'isolate' }}
@@ -130,7 +146,7 @@ export function Navbar() {
               About <ChevronDown className="w-3.5 h-3.5" />
             </Link>
             <ul
-              className={`absolute top-full left-0 min-w-[200px] bg-surface border border-[--color-border] rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-2 z-50 list-none m-0 transition-all duration-500 ${
+              className={`absolute top-full left-0 min-w-[200px] bg-surface rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-2 z-50 list-none m-0 transition-all duration-500 ${
                 aboutDropdownOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'
               }`}
               style={{ isolation: 'isolate' }}
@@ -166,28 +182,42 @@ export function Navbar() {
             >
               Services <ChevronDown className="w-3.5 h-3.5" />
             </Link>
-            <ul
-              className={`absolute top-full left-0 min-w-[220px] bg-surface border border-[--color-border] rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-2 z-50 list-none m-0 transition-all duration-500 ${
+            <div
+              className={`absolute top-full left-0 w-[560px] bg-surface rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-4 z-50 transition-all duration-500 ${
                 dropdownOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'
               }`}
               style={{ isolation: 'isolate' }}
             >
-              {serviceDropdownItems.map((item, i) => (
-                <li
-                  key={item.href}
-                  style={{ animationDelay: `${i * 100}ms` }}
-                  className={dropdownOpen ? 'animate-[fadeInUp_0.5s_ease-out_both]' : undefined}
-                >
-                    <Link
-                      href={item.href}
-                      className="block text-sm no-underline px-4 py-2.5 rounded-md transition-colors duration-200 hover:bg-[rgba(255,255,255,0.05)] hover:text-primary text-white"
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
+              <div className="grid grid-cols-2 gap-2">
+                {[0, 1].map((colIdx) => (
+                  <div key={colIdx} className="flex flex-col gap-1">
+                    {serviceDropdownItems.slice(colIdx * 3, colIdx * 3 + 3).map((item) => {
+                      const IconComp = iconMap[item.icon as keyof typeof iconMap] || LayoutDashboard
+                      const style = accentStyles[item.accent] || accentStyles.primary
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          className="flex items-start gap-3 p-3 rounded-lg hover:bg-[rgba(255,255,255,0.06)] transition-colors duration-200 no-underline group/card"
+                        >
+                          <div
+                            className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 group-hover/card:scale-110 transition-transform duration-200"
+                            style={{ backgroundColor: style.bg, color: style.text }}
+                          >
+                            <IconComp className="w-4 h-4" />
+                          </div>
+                          <div className="min-w-0">
+                            <span className="block text-sm font-medium text-white group-hover/card:text-primary transition-colors duration-200">{item.label}</span>
+                            <p className="text-[11px] text-muted-foreground mt-0.5 leading-snug line-clamp-2">{item.description}</p>
+                          </div>
+                        </Link>
+                      )
+                    })}
+                  </div>
                 ))}
-              </ul>
-            </li>
+              </div>
+            </div>
+          </li>
           {navLinks.filter(l => l.label !== 'Home' && l.label !== 'About').map((link) => (
             <li key={link.href}>
               <Link
@@ -272,16 +302,29 @@ export function Navbar() {
                   </button>
                   {mobileDropdownOpen && (
                     <ul className="pl-4 list-none m-0">
-                    {serviceDropdownItems.map((item) => (
+                    {serviceDropdownItems.map((item) => {
+                      const IconComp = iconMap[item.icon as keyof typeof iconMap] || LayoutDashboard
+                      const style = accentStyles[item.accent] || accentStyles.primary
+                      return (
                       <li key={item.href}>
                         <Link
                           href={item.href}
-                          className="block text-sm no-underline py-2.5 px-4 rounded-md transition-colors duration-200 hover:bg-[rgba(255,255,255,0.05)] hover:text-primary text-white"
+                          className="flex items-start gap-3 text-sm no-underline py-2.5 px-4 rounded-md transition-colors duration-200 hover:bg-[rgba(255,255,255,0.05)] hover:text-primary text-white"
                         >
-                          {item.label}
+                          <div
+                            className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+                            style={{ backgroundColor: style.bg, color: style.text }}
+                          >
+                            <IconComp className="w-3.5 h-3.5" />
+                          </div>
+                          <div className="min-w-0">
+                            <span className="block font-medium">{item.label}</span>
+                            <span className="block text-[11px] text-muted-foreground mt-0.5 leading-snug">{item.description}</span>
+                          </div>
                         </Link>
                       </li>
-                    ))}
+                      )
+                    })}
                     </ul>
                   )}
                 </li>

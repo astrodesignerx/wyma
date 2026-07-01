@@ -102,29 +102,43 @@ export function ImpactBanner() {
             animation: 'marquee-scroll 60s linear infinite',
             animationPlayState: hoveredIdx !== null ? 'paused' : 'running',
           }}
-        >
-          {[...logoFiles, ...logoFiles].map((src, i) => (
-            <span
-              key={`${src}-${i}`}
-              id={`marquee-logo-${i}`}
-              className="relative flex items-center gap-10"
-              onMouseEnter={() => handleMouseEnter(i)}
-              onMouseLeave={handleMouseLeave}
             >
-              <img
-                src={src}
-                alt=""
-                className={`h-40 w-auto flex-shrink-0 transition-all duration-500 ${
-                  hoveredIdx !== null && hoveredIdx !== i ? 'opacity-20 grayscale' : 'opacity-100'
-                }`}
-              />
+              {[...logoFiles, ...logoFiles].map((src, i) => {
+                const client = clientUrls[i % logoFiles.length]
+                return (
+                <span
+                  key={`${src}-${i}`}
+                  id={`marquee-logo-${i}`}
+                  className="relative flex items-center gap-10"
+                  onMouseEnter={() => handleMouseEnter(i)}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  {client ? (
+                    <a href={client.url} target="_blank" rel="noopener noreferrer" className="no-underline">
+                      <img
+                        src={src}
+                        alt=""
+                        className={`h-40 w-auto flex-shrink-0 transition-all duration-500 ${
+                          hoveredIdx !== null && hoveredIdx !== i ? 'opacity-20 grayscale' : 'opacity-100'
+                        }`}
+                      />
+                    </a>
+                  ) : (
+                    <img
+                      src={src}
+                      alt=""
+                      className={`h-40 w-auto flex-shrink-0 transition-all duration-500 ${
+                        hoveredIdx !== null && hoveredIdx !== i ? 'opacity-20 grayscale' : 'opacity-100'
+                      }`}
+                    />
+                  )}
               {i < logoFiles.length * 2 - 1 && (
                 <Star className={`w-5 h-5 text-primary flex-shrink-0 transition-all duration-500 ${
                   hoveredIdx !== null ? 'opacity-20' : 'opacity-100'
                 }`} />
               )}
             </span>
-          ))}
+          )})}
         </div>
       </div>
 

@@ -27,13 +27,13 @@ export const aboutSectionItems = [
   { href: '#team', label: 'Our Team' },
 ]
 
-export const serviceDropdownItems = [
-  { href: '/services/strategy-operations-organizational-development', label: 'Strategy & Development' },
-  { href: '/services/research-market-intelligence', label: 'Research & Market Intelligence' },
-  { href: '/services/entrepreneurship-business-development', label: 'Entrepreneurship & Business Development' },
-  { href: '/services/monitoring-evaluation-me', label: 'Monitoring & Evaluation (M&E)' },
-  { href: '/services/risk-governance-value-assessments', label: 'Risk, Governance & Value Assessments' },
-  { href: '/services/training-capacity-building', label: 'Training & Capacity Building' },
+export const serviceDropdownItems: { href: string; label: string; description: string; icon: string; accent: string }[] = [
+  { href: '/services/strategy-operations-organizational-development', label: 'Strategy & Development', description: 'Strategic planning, operational efficiency, and change management.', icon: 'layout-dashboard', accent: 'primary' },
+  { href: '/services/research-market-intelligence', label: 'Research & Intelligence', description: 'Market research, surveys, labour market and data analysis.', icon: 'search', accent: 'secondary' },
+  { href: '/services/entrepreneurship-business-development', label: 'Entrepreneurship', description: 'SME advisory, digital transformation, business development.', icon: 'lightbulb', accent: 'primary' },
+  { href: '/services/monitoring-evaluation-me', label: 'Monitoring & Evaluation', description: 'Baseline studies, evaluations, performance reporting.', icon: 'clipboard-list', accent: 'accent' },
+  { href: '/services/training-capacity-building', label: 'Training & Capacity', description: 'Customised training, leadership development, capacity strengthening.', icon: 'graduation-cap', accent: 'secondary' },
+  { href: '/services/risk-governance-value-assessments', label: 'Risk & Governance', description: 'Risk assessment, governance audits, feasibility studies.', icon: 'shield', accent: 'danger' },
 ]
 
 export const services: ServiceItem[] = [

@@ -82,7 +82,7 @@ export function ContactForm() {
               id="fullName"
               value={form.fullName}
               onChange={(e) => handleChange('fullName', e.target.value)}
-              className="bg-[rgba(100,175,71,0.08)] border-[#d0d0d0] text-[#121212]"
+              className="bg-[rgba(100,175,71,0.15)] border-[#d0d0d0] text-[#121212]"
               placeholder="Your full name"
             />
         </div>
@@ -94,7 +94,7 @@ export function ContactForm() {
               id="organisation"
               value={form.organisation}
               onChange={(e) => handleChange('organisation', e.target.value)}
-              className="bg-[rgba(100,175,71,0.08)] border-[#d0d0d0] text-[#121212]"
+              className="bg-[rgba(100,175,71,0.15)] border-[#d0d0d0] text-[#121212]"
               placeholder="Your organisation"
             />
         </div>
@@ -107,7 +107,7 @@ export function ContactForm() {
               type="email"
               value={form.email}
               onChange={(e) => handleChange('email', e.target.value)}
-              className="bg-[rgba(100,175,71,0.08)] border-[#d0d0d0] text-[#121212]"
+              className="bg-[rgba(100,175,71,0.15)] border-[#d0d0d0] text-[#121212]"
               placeholder="you@example.com"
             />
         </div>
@@ -120,7 +120,7 @@ export function ContactForm() {
               type="tel"
               value={form.phone}
               onChange={(e) => handleChange('phone', e.target.value)}
-              className="bg-[rgba(100,175,71,0.08)] border-[#d0d0d0] text-[#121212]"
+              className="bg-[rgba(100,175,71,0.15)] border-[#d0d0d0] text-[#121212]"
               placeholder="+254 7XX XXX XXX"
             />
         </div>
@@ -129,7 +129,7 @@ export function ContactForm() {
             Service Interested In
           </label>
           <Select value={form.service} onValueChange={(v) => handleChange('service', v ?? '')}>
-            <SelectTrigger className="bg-[rgba(100,175,71,0.08)] border-[#d0d0d0] text-[#121212]">
+            <SelectTrigger className="bg-[rgba(100,175,71,0.15)] border-[#d0d0d0] text-[#121212]">
               <SelectValue placeholder="Select a service" />
             </SelectTrigger>
             <SelectContent className="bg-white border-[#e0e0e0] text-[#121212]">
@@ -153,7 +153,7 @@ export function ContactForm() {
             rows={5}
             value={form.message}
             onChange={(e) => handleChange('message', e.target.value)}
-            className="bg-[rgba(100,175,71,0.08)] border-[#d0d0d0] text-[#121212] resize-none"
+            className="bg-[rgba(100,175,71,0.15)] border-[#d0d0d0] text-[#121212] resize-none"
             placeholder="Tell us about your project..."
           />
         </div>

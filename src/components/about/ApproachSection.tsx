@@ -1,86 +1,95 @@
 export function ApproachSection() {
   const steps = [
     {
-      title: 'Organisational Diagnostic & Needs Assessment',
+      number: '1',
+      title: 'Diagnostic',
       description:
         'Deep-dive into organizational structures to identify untapped value and core operational requirements.',
+      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=500&fit=crop',
     },
     {
-      title: 'Stakeholder Engagement & Data Collection',
+      number: '2',
+      title: 'Engagement',
       description:
         'Collaborative gathering of qualitative and quantitative data to inform strategic decision-making.',
+      image: 'https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=800&h=500&fit=crop',
     },
     {
-      title: 'Solution Design & Strategic Alignment',
+      number: '3',
+      title: 'Design',
       description:
         'Architecting solutions that align with organizational objectives and industry-leading best practices.',
+      image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=500&fit=crop',
     },
     {
-      title: 'Implementation Support & Performance Monitoring',
+      number: '4',
+      title: 'Implementation',
       description:
         'Hands-on rollout with continuous feedback loops to ensure sustainable impact and performance tracking.',
+      image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=500&fit=crop',
     },
   ]
 
   return (
-    <section className="py-24 bg-[#f5f5f5]" id="methodology">
+    <section className="py-24 bg-[#121212]" id="methodology">
       <div className="mx-auto max-w-[1200px] px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* Left column */}
-          <div className="fade-in">
-            <span className="inline-block font-heading text-[11px] font-semibold tracking-[0.15em] uppercase text-primary mb-3">
-              THE PROCESS
-            </span>
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-[#121212] mb-6">Our Process</h2>
-            <p className="text-[#555] leading-relaxed mb-8">
-              We don&apos;t just advise; we engineer. Our four-stage methodology ensures that innovation is matched
-              with operational stability and security from day zero.
-            </p>
+        {/* Header */}
+        <div className="text-center mb-16 fade-in">
+          <span className="inline-block font-heading text-[11px] font-semibold tracking-[0.15em] uppercase text-[#EECB27] mb-3">
+            THE PROCESS
+          </span>
+          <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">
+            Our Consulting Approach
+          </h2>
+          <p className="text-muted-foreground max-w-[600px] mx-auto leading-relaxed">
+            A rigorous, four-step methodology designed to move from ambiguity to tangible, high-impact results.
+          </p>
+        </div>
 
-            {/* Accelerated Delivery card */}
-            <div className="rounded-xl p-6 bg-white border border-[#e0e0e0] mb-8 flex items-start gap-4">
-              <div className="w-10 h-10 rounded-[10px] bg-[rgba(100,175,71,0.15)] text-primary flex items-center justify-center flex-shrink-0 mt-0.5">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="m12 14 4-4" /><path d="M3.34 19a10 10 0 1 1 17.32 0" />
-                </svg>
-              </div>
-              <div>
-                <div className="font-heading text-sm font-semibold tracking-wider text-primary uppercase mb-1">
-                  ACCELERATED DELIVERY
-                </div>
-                <p className="text-sm text-[#555] leading-relaxed">
-                  Rapid prototyping to production environments.
-                </p>
-              </div>
-            </div>
+        {/* Timeline */}
+        <div className="relative max-w-[900px] mx-auto">
+          {/* Vertical dashed line */}
+          <div
+            className="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2"
+            style={{
+              backgroundImage: 'repeating-linear-gradient(to bottom, rgba(238,203,39,0.3) 0px, rgba(238,203,39,0.3) 6px, transparent 6px, transparent 12px)',
+            }}
+          />
 
-            {/* Image */}
-            <div
-              className="rounded-xl overflow-hidden h-[240px] bg-cover bg-center"
-              style={{ backgroundImage: 'url(/images/approach.jpg)' }}
-            />
-          </div>
-
-          {/* Right column — timeline */}
-          <div className="fade-in relative flex flex-col justify-between">
-            {/* Vertical line */}
-            <div className="absolute left-[17px] top-0 bottom-0 w-px bg-[#ddd]" />
-
-            {steps.map((step, i) => (
-              <div key={i} className="flex gap-5 flex-1 items-center">
-                {/* Diamond */}
-                <div className="flex-shrink-0 w-[34px] flex justify-center">
-                  <div className="w-[13px] h-[13px] rotate-45 bg-primary flex-shrink-0" />
-                </div>
-
+          {steps.map((step, i) => {
+            const isLeft = i % 2 === 0
+            return (
+              <div key={i} className={`relative flex items-center mb-16 last:mb-0 ${isLeft ? 'flex-row' : 'flex-row-reverse'}`}>
                 {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-heading text-lg font-semibold text-[#121212] mb-2">{step.title}</h3>
-                  <p className="text-sm text-[#555] leading-relaxed">{step.description}</p>
+                <div className={`w-[calc(50%-32px)] fade-in delay-${i + 1}`}>
+                  <div className={isLeft ? 'text-right pr-4' : 'text-left pl-4'}>
+                    <span className="inline-block font-heading text-[11px] font-semibold tracking-[0.15em] uppercase text-[#EECB27] mb-2">
+                      STEP {i + 1}
+                    </span>
+                    <h3 className="font-heading text-xl font-bold text-white mb-3">{step.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed max-w-[320px] inline-block">
+                      {step.description}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Center marker */}
+                <div className="flex-shrink-0 w-16 flex justify-center relative z-10">
+                  <div className="w-[46px] h-[46px] rounded-full bg-[#121212] border-2 border-[#EECB27] flex items-center justify-center shadow-[0_0_20px_rgba(238,203,39,0.25)]">
+                    <span className="font-heading text-lg font-bold text-[#EECB27]">{step.number}</span>
+                  </div>
+                </div>
+
+                {/* Image on opposite side */}
+                <div className={`w-[calc(50%-32px)] fade-in delay-${i + 1}`}>
+                  <div
+                    className="rounded-xl overflow-hidden h-[200px] bg-cover bg-center shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
+                    style={{ backgroundImage: `url(${step.image})` }}
+                  />
                 </div>
               </div>
-            ))}
-          </div>
+            )
+          })}
         </div>
       </div>
     </section>

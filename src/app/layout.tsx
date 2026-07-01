@@ -5,6 +5,7 @@ import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { ScrollAnimationInit } from '@/components/layout/ScrollAnimationInit'
 import { BackToTop } from '@/components/layout/BackToTop'
+import { WhatsAppButton } from '@/components/layout/WhatsAppButton'
 import { LenisProvider } from '@/components/layout/LenisProvider'
 import { HeroLightProvider } from '@/context/HeroLightContext'
 
@@ -46,6 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Navbar />
           <ScrollAnimationInit />
           <BackToTop />
+          <WhatsAppButton />
           <LenisProvider>
             <main className="flex-1">{children}</main>
             <Footer />

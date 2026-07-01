@@ -37,7 +37,7 @@ export function LoadingScreen() {
         <img
           src="/images/logo-icon.svg"
           alt="WYMA New Frontiers"
-          className="h-16 w-auto opacity-80"
+          className="h-16 w-auto opacity-80 brightness-0 invert"
         />
         <div className="w-7 h-7 border-[2.5px] border-white/20 border-t-primary rounded-full animate-spin" />
       </div>

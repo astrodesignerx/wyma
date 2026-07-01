@@ -8,15 +8,18 @@ export function WhyUs() {
 
       <div className="mx-auto max-w-[1200px] px-6 relative z-[1]">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div className="fade-in-left">
+          <div className="fade-in">
             <span className="inline-block font-heading text-[11px] font-semibold tracking-[0.15em] uppercase text-[#EECB27] mb-3">
               WHY CHOOSE US
             </span>
             <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-8">The WYMA Advantage</h2>
-            {advantages.map((adv) => (
-              <div key={adv.title} className="flex gap-4 mb-6">
+            {advantages.map((adv, i) => (
+              <div
+                key={adv.title}
+                className={`group/adv flex gap-4 mb-6 transition-all duration-[3500ms] ease-in-out hover:scale-[1.02] fade-in delay-${i + 1}`}
+              >
                 <div
-                  className="w-10 h-10 rounded-[10px] flex items-center justify-center flex-shrink-0 mt-0.5"
+                  className="w-10 h-10 rounded-[10px] flex items-center justify-center flex-shrink-0 mt-0.5 transition-all duration-[3500ms] ease-in-out group-hover/adv:scale-105 group-hover/adv:shadow-[0_0_15px_rgba(100,175,71,0.2)]"
                   style={{ backgroundColor: adv.iconBg }}
                 >
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={adv.iconColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -51,18 +54,20 @@ export function WhyUs() {
                     )}
                   </svg>
                 </div>
-                <div className="advantage-text">
-                  <h4 className="font-heading font-semibold text-white mb-1">{adv.title}</h4>
+                <div>
+                  <h4 className="font-heading font-semibold text-white mb-1 transition-colors duration-[3500ms] ease-in-out group-hover/adv:text-primary">{adv.title}</h4>
                   <p className="text-sm text-muted-foreground">{adv.description}</p>
                 </div>
               </div>
             ))}
           </div>
-          <div className="fade-in-right">
-            <div
-              className="rounded-xl overflow-hidden h-[400px] bg-cover bg-center"
-              style={{ backgroundImage: 'url(/images/why-us.jpg)' }}
-            />
+          <div className="fade-in">
+            <div className="group/img rounded-xl overflow-hidden h-[400px]">
+              <div
+                className="w-full h-full bg-cover bg-center transition-transform duration-[3500ms] ease-in-out group-hover/img:scale-110"
+                style={{ backgroundImage: 'url(/images/why-us.jpg)' }}
+              />
+            </div>
           </div>
         </div>
       </div>

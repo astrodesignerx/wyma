@@ -24,7 +24,6 @@ export function ServiceOfferings({ data }: { data: ServicePageData }) {
             <div
               key={o.title}
               className={`group relative rounded-xl p-8 border border-[--color-card-border] bg-surface overflow-hidden transition-all duration-300 hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)] fade-in-scale delay-${i + 1}`}
-              style={{ borderLeft: `4px solid ${cfg.color}` }}
             >
               <div
                 className="absolute bottom-0 left-0 w-full h-[65%] pointer-events-none opacity-0 transition-opacity duration-300 group-hover:opacity-100"

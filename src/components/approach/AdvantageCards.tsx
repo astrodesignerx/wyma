@@ -2,25 +2,24 @@ import { advantages } from '@/data/constants'
 
 export function AdvantageCards() {
   return (
-    <section className="py-24 relative overflow-hidden" id="why-us">
-      <div className="absolute top-[-200px] left-[-200px] w-[400px] h-[400px] rounded-full border border-solid border-[rgba(255,255,255,0.04)] pointer-events-none" />
-      <div className="mx-auto max-w-[1200px] px-6 relative z-[1]">
+    <section className="py-24 bg-[#f5f5f5]" id="why-us">
+      <div className="mx-auto max-w-[1200px] px-6">
         <div className="text-center mb-12 fade-in">
-          <span className="inline-block font-heading text-[11px] font-semibold tracking-[0.15em] uppercase text-[#EECB27] mb-3">
+          <span className="inline-block font-heading text-[11px] font-semibold tracking-[0.15em] uppercase text-primary mb-3">
             WHY CHOOSE US
           </span>
-          <h2 className="font-heading text-3xl md:text-4xl font-bold text-white">The WYMA Advantage</h2>
+          <h2 className="font-heading text-3xl md:text-4xl font-bold text-[#121212]">The WYMA Advantage</h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {advantages.map((adv, i) => (
             <div
               key={adv.title}
-              className={`group relative rounded-xl p-8 border border-[--color-card-border] bg-surface overflow-hidden transition-all duration-500 fade-in-scale delay-${i + 1}`}
+              className={`group relative rounded-xl p-8 border border-[#e0e0e0] bg-white overflow-hidden transition-all duration-500 hover:shadow-[0_8px_30px_rgba(0,0,0,0.1)] fade-in-scale delay-${i + 1}`}
             >
               <div
                 className="absolute bottom-0 left-0 w-full h-[65%] pointer-events-none opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                 style={{
-                  background: `linear-gradient(to top, rgba(100,175,71,0.12), rgba(100,175,71,0.04), transparent)`,
+                  background: `linear-gradient(to top, rgba(100,175,71,0.08), rgba(100,175,71,0.02), transparent)`,
                 }}
               />
               <div className="relative z-[1]">
@@ -60,8 +59,8 @@ export function AdvantageCards() {
                     )}
                   </svg>
                 </div>
-                <h3 className="font-heading text-lg font-semibold text-white mb-3">{adv.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{adv.description}</p>
+                <h3 className="font-heading text-lg font-semibold text-[#121212] mb-3">{adv.title}</h3>
+                <p className="text-sm text-[#555] leading-relaxed">{adv.description}</p>
               </div>
             </div>
           ))}
