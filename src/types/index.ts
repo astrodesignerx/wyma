@@ -1,5 +1,6 @@
 export interface ServiceItem {
-  id: string
+  /** Matches a `servicePageData` slug — drives the /services/[slug] link. */
+  slug: string
   title: string
   description: string
   icon: string
@@ -33,10 +34,6 @@ export interface FAQItem {
   answer: string
 }
 
-export interface ServiceDetail extends ServiceItem {
-  href: string
-}
-
 export interface StepItem {
   number: string
   icon: string
@@ -55,6 +52,7 @@ export interface ServicePageData {
   shortTitle: string
   heroTagline: string
   overview: string
+  overviewImage: string
   accent: 'primary' | 'secondary' | 'accent' | 'danger'
   icon: string
   offerings: ServiceOfferingItem[]

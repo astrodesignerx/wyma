@@ -1,11 +1,13 @@
 'use client'
 
 import { ChevronDown } from 'lucide-react'
+import { useSmoothScroll } from '@/hooks/useSmoothScroll'
 
 export function ServicesHero() {
+  const { scrollToSection } = useSmoothScroll()
   return (
-    <section className="relative py-[322px] bg-[#121212] overflow-hidden">
-      <div className="flex items-center relative">
+    <section className="relative min-h-dvh flex items-center bg-[#121212] overflow-hidden">
+      <div className="flex items-center relative w-full">
         {/* Left content */}
         <div className="flex-1 mx-auto max-w-[1200px] px-6 relative z-[2]">
           <div className="max-w-[520px] fade-in">
@@ -66,24 +68,7 @@ export function ServicesHero() {
       {/* Scroll Indicator */}
       <button
         onClick={() => {
-          const el = document.getElementById('services-intro')
-          if (el) {
-            const navbar = document.querySelector('nav')
-            const offset = navbar?.offsetHeight ?? 102
-            const target = el.getBoundingClientRect().top + window.scrollY - offset
-            const start = window.scrollY
-            const distance = target - start
-            const duration = 900
-            const startTime = performance.now()
-            const ease = (t: number) => 1 - Math.pow(1 - t, 3)
-            function scroll(t: number) {
-              const elapsed = t - startTime
-              const progress = Math.min(elapsed / duration, 1)
-              window.scrollTo(0, start + distance * ease(progress))
-              if (progress < 1) requestAnimationFrame(scroll)
-            }
-            requestAnimationFrame(scroll)
-          }
+          scrollToSection('services-intro')
         }}
         className="absolute bottom-10 left-1/2 z-[3] flex flex-col items-center gap-1 cursor-pointer animate-float"
         aria-label="Scroll to next section"

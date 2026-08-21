@@ -3,25 +3,17 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, X, ChevronDown, LayoutDashboard, Search, Lightbulb, ClipboardList, Shield, GraduationCap } from 'lucide-react'
+import { Menu, ChevronDown, LayoutDashboard, Search, Lightbulb, ClipboardList, Shield, GraduationCap } from 'lucide-react'
 import { useNavbarScroll } from '@/hooks/useNavbarScroll'
+import { useSmoothScroll } from '@/hooks/useSmoothScroll'
 import { useHeroLight } from '@/context/HeroLightContext'
 import { navLinks, serviceDropdownItems, homeSectionItems, aboutSectionItems } from '@/data/constants'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 
-function scrollToSection(href: string) {
-  const id = href.replace('#', '')
-  const el = document.getElementById(id)
-  if (el) {
-    const navbar = document.querySelector('nav')
-    const offset = navbar?.offsetHeight ?? 102
-    const target = el.getBoundingClientRect().top + window.scrollY - offset
-    window.scrollTo({ top: target, behavior: 'smooth' })
-  }
-}
+type ScrollToSection = (href: string) => void
 
-function handleAboutNav(href: string, pathname: string) {
+function handleAboutNav(href: string, pathname: string, scrollToSection: ScrollToSection) {
   if (pathname === '/about') {
     scrollToSection(href)
   } else {
@@ -29,9 +21,38 @@ function handleAboutNav(href: string, pathname: string) {
   }
 }
 
+function handleHomeNav(href: string, pathname: string, scrollToSection: ScrollToSection) {
+  if (pathname === '/') {
+    scrollToSection(href)
+  } else {
+    window.location.href = `/${href}`
+  }
+}
+
+/** Focus/blur/Escape handlers so hover dropdowns also work with a keyboard. */
+function dropdownA11yProps(setOpen: (open: boolean) => void) {
+  return {
+    onMouseEnter: () => setOpen(true),
+    onMouseLeave: () => setOpen(false),
+    onFocus: () => setOpen(true),
+    onBlur: (e: React.FocusEvent<HTMLLIElement>) => {
+      if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setOpen(false)
+    },
+    onKeyDown: (e: React.KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false)
+    },
+  }
+}
+
+const dropdownPanelClass = (open: boolean) =>
+  open
+    ? 'opacity-100 translate-y-0 pointer-events-auto visible'
+    : 'opacity-0 -translate-y-2 pointer-events-none invisible'
+
 export function Navbar() {
   const scrolled = useNavbarScroll()
   const pathname = usePathname()
+  const { scrollToSection } = useSmoothScroll()
   const [homeDropdownOpen, setHomeDropdownOpen] = useState(false)
   const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
@@ -97,21 +118,17 @@ export function Navbar() {
         {/* Desktop Nav - centered */}
         <ul className="hidden lg:flex items-center justify-center gap-4 list-none m-0 p-0 flex-1">
           {/* Home Dropdown */}
-          <li
-            className="relative"
-            onMouseEnter={() => setHomeDropdownOpen(true)}
-            onMouseLeave={() => setHomeDropdownOpen(false)}
-          >
+          <li className="relative" {...dropdownA11yProps(setHomeDropdownOpen)}>
             <Link
               href="/"
+              aria-expanded={homeDropdownOpen}
+              aria-haspopup="true"
               className={`text-sm font-medium no-underline px-3 py-2 transition-colors duration-300 hover:text-primary inline-flex items-center gap-1 ${navText(isActive('/'))}`}
             >
               Home <ChevronDown className="w-3.5 h-3.5" />
             </Link>
             <ul
-              className={`absolute top-full left-0 min-w-[200px] bg-surface rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-2 z-50 list-none m-0 transition-all duration-500 ${
-                homeDropdownOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'
-              }`}
+              className={`absolute top-full left-0 min-w-[200px] bg-surface rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-2 z-50 list-none m-0 transition-all duration-500 ${dropdownPanelClass(homeDropdownOpen)}`}
               style={{ isolation: 'isolate' }}
             >
               {homeSectionItems.map((item, i) => (
@@ -123,7 +140,7 @@ export function Navbar() {
                     <button
                       onClick={() => {
                         setHomeDropdownOpen(false)
-                        scrollToSection(item.href)
+                        handleHomeNav(item.href, pathname, scrollToSection)
                       }}
                       className="w-full text-left text-sm no-underline px-4 py-2.5 rounded-md transition-colors duration-200 hover:bg-[rgba(255,255,255,0.05)] hover:text-primary text-[--color-muted] bg-transparent border-none cursor-pointer font-sans"
                     >
@@ -134,21 +151,17 @@ export function Navbar() {
               </ul>
             </li>
           {/* About Dropdown */}
-          <li
-            className="relative"
-            onMouseEnter={() => setAboutDropdownOpen(true)}
-            onMouseLeave={() => setAboutDropdownOpen(false)}
-          >
+          <li className="relative" {...dropdownA11yProps(setAboutDropdownOpen)}>
             <Link
               href="/about"
+              aria-expanded={aboutDropdownOpen}
+              aria-haspopup="true"
               className={`text-sm font-medium no-underline px-3 py-2 transition-colors duration-300 hover:text-primary inline-flex items-center gap-1 ${navText(isActive('/about'), true)}`}
             >
               About <ChevronDown className="w-3.5 h-3.5" />
             </Link>
             <ul
-              className={`absolute top-full left-0 min-w-[200px] bg-surface rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-2 z-50 list-none m-0 transition-all duration-500 ${
-                aboutDropdownOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'
-              }`}
+              className={`absolute top-full left-0 min-w-[200px] bg-surface rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-2 z-50 list-none m-0 transition-all duration-500 ${dropdownPanelClass(aboutDropdownOpen)}`}
               style={{ isolation: 'isolate' }}
             >
               {aboutSectionItems.map((item, i) => (
@@ -160,7 +173,7 @@ export function Navbar() {
                     <button
                       onClick={() => {
                         setAboutDropdownOpen(false)
-                        handleAboutNav(item.href, pathname)
+                        handleAboutNav(item.href, pathname, scrollToSection)
                       }}
                       className="w-full text-left text-sm no-underline px-4 py-2.5 rounded-md transition-colors duration-200 hover:bg-[rgba(255,255,255,0.05)] hover:text-primary text-[--color-muted] bg-transparent border-none cursor-pointer font-sans"
                     >
@@ -171,21 +184,17 @@ export function Navbar() {
               </ul>
             </li>
           {/* Services Dropdown */}
-          <li
-            className="relative"
-            onMouseEnter={() => setDropdownOpen(true)}
-            onMouseLeave={() => setDropdownOpen(false)}
-          >
+          <li className="relative" {...dropdownA11yProps(setDropdownOpen)}>
             <Link
               href="/services"
+              aria-expanded={dropdownOpen}
+              aria-haspopup="true"
               className={`text-sm font-medium no-underline px-3 py-2 transition-colors duration-300 hover:text-primary inline-flex items-center gap-1 ${navText(isActive('/services'))}`}
             >
               Services <ChevronDown className="w-3.5 h-3.5" />
             </Link>
             <div
-              className={`absolute top-full left-0 w-[560px] bg-surface rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-4 z-50 transition-all duration-500 ${
-                dropdownOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'
-              }`}
+              className={`absolute top-full left-0 w-[560px] bg-surface rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-4 z-50 transition-all duration-500 ${dropdownPanelClass(dropdownOpen)}`}
               style={{ isolation: 'isolate' }}
             >
               <div className="grid grid-cols-2 gap-2">
@@ -233,7 +242,7 @@ export function Navbar() {
         {/* Right side - gutter right */}
         <div className="flex items-center gap-4 flex-shrink-0">
           <Link href="/contact" className="hidden lg:block">
-            <Button className="group relative overflow-hidden rounded-md text-white px-6 py-5 text-sm">
+            <Button className="group relative overflow-hidden rounded-md text-white px-6 py-5 text-sm transition-transform duration-300 ease-out hover:scale-[1.03]">
               <span className="absolute inset-0 bg-gradient-to-br from-primary to-secondary opacity-0 transition-opacity duration-1000 group-hover:opacity-100 pointer-events-none" />
               <span className="relative z-10">Request Consultation</span>
             </Button>
@@ -256,10 +265,14 @@ export function Navbar() {
                   </button>
                   {mobileHomeOpen && (
                     <ul className="pl-4 list-none m-0">
-                      {homeSectionItems.map((item) => (
-                        <li key={item.href}>
+                      {homeSectionItems.map((item, i) => (
+                        <li
+                          key={item.href}
+                          style={{ animationDelay: `${i * 100}ms` }}
+                          className="animate-[fadeInUp_0.5s_ease-out_both]"
+                        >
                           <button
-                            onClick={() => scrollToSection(item.href)}
+                            onClick={() => handleHomeNav(item.href, pathname, scrollToSection)}
                             className="w-full text-left text-sm no-underline py-2.5 px-4 rounded-md transition-colors duration-200 hover:bg-[rgba(255,255,255,0.05)] hover:text-primary text-[--color-muted] bg-transparent border-none cursor-pointer font-sans"
                           >
                             {item.label}
@@ -279,10 +292,14 @@ export function Navbar() {
                   </button>
                   {mobileAboutOpen && (
                     <ul className="pl-4 list-none m-0">
-                      {aboutSectionItems.map((item) => (
-                        <li key={item.href}>
+                      {aboutSectionItems.map((item, i) => (
+                        <li
+                          key={item.href}
+                          style={{ animationDelay: `${i * 100}ms` }}
+                          className="animate-[fadeInUp_0.5s_ease-out_both]"
+                        >
                           <button
-                            onClick={() => handleAboutNav(item.href, pathname)}
+                            onClick={() => handleAboutNav(item.href, pathname, scrollToSection)}
                             className="w-full text-left text-sm no-underline py-2.5 px-4 rounded-md transition-colors duration-200 hover:bg-[rgba(255,255,255,0.05)] hover:text-primary text-[--color-muted] bg-transparent border-none cursor-pointer font-sans"
                           >
                             {item.label}
@@ -302,11 +319,15 @@ export function Navbar() {
                   </button>
                   {mobileDropdownOpen && (
                     <ul className="pl-4 list-none m-0">
-                    {serviceDropdownItems.map((item) => {
+                    {serviceDropdownItems.map((item, i) => {
                       const IconComp = iconMap[item.icon as keyof typeof iconMap] || LayoutDashboard
                       const style = accentStyles[item.accent] || accentStyles.primary
                       return (
-                      <li key={item.href}>
+                      <li
+                        key={item.href}
+                        style={{ animationDelay: `${i * 100}ms` }}
+                        className="animate-[fadeInUp_0.5s_ease-out_both]"
+                      >
                         <Link
                           href={item.href}
                           className="flex items-start gap-3 text-sm no-underline py-2.5 px-4 rounded-md transition-colors duration-200 hover:bg-[rgba(255,255,255,0.05)] hover:text-primary text-white"
@@ -340,7 +361,7 @@ export function Navbar() {
                 ))}
                 <li className="mt-4">
                   <Link href="/contact" className="block">
-                    <Button className="group relative overflow-hidden w-full rounded-md text-white px-6 py-5 text-sm">
+                    <Button className="group relative overflow-hidden w-full rounded-md text-white px-6 py-5 text-sm transition-transform duration-300 ease-out hover:scale-[1.03]">
                       <span className="absolute inset-0 bg-gradient-to-br from-primary to-secondary opacity-0 transition-opacity duration-1000 group-hover:opacity-100 pointer-events-none" />
                       <span className="relative z-10">Request Consultation</span>
                     </Button>

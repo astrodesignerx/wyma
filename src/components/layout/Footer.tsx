@@ -1,13 +1,10 @@
 import Link from 'next/link'
 import { MapPin, Mail, Phone, Globe } from 'lucide-react'
-import { siteName, siteTagline, contactInfo, footerQuickLinks, footerServicesLinks } from '@/data/constants'
+import { siteName, siteTagline, contactInfo, footerQuickLinks, footerServicesLinks, socialProfiles } from '@/data/constants'
 
-const socialLinks = [
-  { href: '#', label: 'LinkedIn', icon: 'linkedin' },
-  { href: '#', label: 'Twitter', icon: 'twitter' },
-  { href: '#', label: 'Facebook', icon: 'facebook' },
-  { href: '#', label: 'YouTube', icon: 'youtube' },
-]
+const socialLinks = socialProfiles
+  .filter((s) => s.url)
+  .map((s) => ({ href: s.url, label: s.label, icon: s.icon }))
 
 const contactItems = [
   { icon: MapPin, text: contactInfo.address },
@@ -30,11 +27,14 @@ export function Footer() {
             <p className="mt-6 text-sm text-[rgba(255,255,255,0.65)] leading-relaxed max-w-[300px]">
               {siteTagline}
             </p>
+            {socialLinks.length > 0 && (
             <div className="flex items-center gap-3 mt-5">
               {socialLinks.map((s) => (
                 <a
                   key={s.label}
                   href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={s.label}
                   className="w-10 h-10 rounded-full border-2 border-solid border-[rgba(255,255,255,0.2)] flex items-center justify-center text-[rgba(255,255,255,0.4)] no-underline transition-all duration-300 hover:border-primary hover:text-primary hover:bg-[rgba(100,175,71,0.1)]"
                 >
@@ -53,6 +53,7 @@ export function Footer() {
                 </a>
               ))}
             </div>
+            )}
           </div>
 
           {/* Column 2: Quick Links */}

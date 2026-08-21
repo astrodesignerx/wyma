@@ -8,7 +8,7 @@ export function useScrollAnimation() {
 
   useEffect(() => {
     const els = document.querySelectorAll<HTMLElement>(
-      '.fade-in, .fade-in-left, .fade-in-right, .fade-in-scale'
+      '.fade-in, .fade-in-scale'
     )
 
     if (els.length === 0) return

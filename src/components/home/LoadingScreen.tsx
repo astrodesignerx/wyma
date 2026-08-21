@@ -3,30 +3,34 @@
 import { useEffect, useState } from 'react'
 
 export function LoadingScreen() {
-  const [hidden, setHidden] = useState(() => {
-    try {
-      return typeof window === 'undefined' || sessionStorage.getItem('wyma_loaded') === 'true'
-    } catch {
-      return true
-    }
-  })
+  // Rendered hidden on both server and first client paint (no hydration
+  // mismatch); shown only after mount for first-time visitors this session.
+  const [show, setShow] = useState(false)
   const [fading, setFading] = useState(false)
 
   useEffect(() => {
-    if (!hidden) {
-      const fadeTimer = setTimeout(() => {
-        setFading(true)
-        setTimeout(() => {
-          setHidden(true)
-          try { sessionStorage.setItem('wyma_loaded', 'true') } catch {}
-        }, 700)
-      }, 3000)
-
-      return () => clearTimeout(fadeTimer)
+    try {
+      if (sessionStorage.getItem('wyma_loaded') === 'true') return
+    } catch {
+      return
     }
-  }, [hidden])
 
-  if (hidden) return null
+    const showTimer = setTimeout(() => setShow(true), 0)
+    const fadeTimer = setTimeout(() => {
+      setFading(true)
+      setTimeout(() => {
+        setShow(false)
+        try { sessionStorage.setItem('wyma_loaded', 'true') } catch {}
+      }, 700)
+    }, 900)
+
+    return () => {
+      clearTimeout(showTimer)
+      clearTimeout(fadeTimer)
+    }
+  }, [])
+
+  if (!show) return null
 
   return (
     <div

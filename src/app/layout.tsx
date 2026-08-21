@@ -8,6 +8,7 @@ import { BackToTop } from '@/components/layout/BackToTop'
 import { WhatsAppButton } from '@/components/layout/WhatsAppButton'
 import { LenisProvider } from '@/components/layout/LenisProvider'
 import { HeroLightProvider } from '@/context/HeroLightContext'
+import { siteUrl } from '@/data/constants'
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -34,9 +35,28 @@ const playfair = Playfair_Display({
 })
 
 export const metadata: Metadata = {
-  title: 'WYMA New Frontiers Limited — Management Consultancy',
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: 'WYMA New Frontiers Limited — Management Consultancy',
+    template: '%s — WYMA New Frontiers',
+  },
   description:
     'Nairobi-based management consultancy accelerating innovation through strategic leadership, research, M&E, and capacity building.',
+  openGraph: {
+    type: 'website',
+    siteName: 'WYMA New Frontiers',
+    url: '/',
+    title: 'WYMA New Frontiers Limited — Management Consultancy',
+    description:
+      'Nairobi-based management consultancy accelerating innovation through strategic leadership, research, M&E, and capacity building.',
+    images: [{ url: '/images/hero-bg.jpg', width: 1200, height: 630, alt: 'WYMA New Frontiers' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+  },
+  alternates: {
+    canonical: '/',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

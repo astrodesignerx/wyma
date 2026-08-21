@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { serviceDetails } from '@/data/constants'
+import { serviceDetails, contactInfo } from '@/data/constants'
 
 interface FormData {
   fullName: string
@@ -21,6 +21,8 @@ interface FormData {
   phone: string
   service: string
   message: string
+  // Honeypot — hidden from real users; bots that fill it are silently dropped server-side.
+  website: string
 }
 
 const initialForm: FormData = {
@@ -30,6 +32,7 @@ const initialForm: FormData = {
   phone: '',
   service: '',
   message: '',
+  website: '',
 }
 
 export function ContactForm() {
@@ -56,63 +59,100 @@ export function ContactForm() {
 
     setStatus('sending')
     try {
-      const res = await fetch('/api/contact', {
+      // Bots that fill the hidden honeypot get a fake success and nothing is sent.
+      if (form.website.trim() !== '') {
+        setStatus('sent')
+        setForm(initialForm)
+        setErrorMsg('')
+        setTimeout(() => setStatus('idle'), 4000)
+        return
+      }
+
+      const res = await fetch(`https://formsubmit.co/ajax/${contactInfo.email}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          'Full Name': form.fullName,
+          Organisation: form.organisation,
+          Email: form.email,
+          Phone: form.phone,
+          'Service Interested In': form.service,
+          Message: form.message,
+          _subject: `New Contact Form Submission — ${form.fullName.slice(0, 100)}`,
+          _replyto: form.email,
+          _template: 'table',
+          _captcha: 'false',
+          _honey: form.website,
+        }),
       })
-      if (!res.ok) throw new Error('Failed to send')
+      if (!res.ok) throw new Error('Something went wrong. Please try again.')
       setStatus('sent')
       setForm(initialForm)
+      setErrorMsg('')
       setTimeout(() => setStatus('idle'), 4000)
-    } catch {
+    } catch (err) {
       setStatus('error')
-      setErrorMsg('Something went wrong. Please try again.')
+      setErrorMsg(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white border border-[#e0e0e0] rounded-xl p-8">
+    <form onSubmit={handleSubmit} className="relative bg-surface rounded-xl p-8">
+      {/* Honeypot field — visually hidden and skipped by keyboard/screen readers */}
+      <div aria-hidden="true" className="absolute w-px h-px overflow-hidden -m-px" style={{ clip: 'rect(0 0 0 0)' }}>
+        <label htmlFor="website">Website</label>
+        <input
+          id="website"
+          name="website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={form.website}
+          onChange={(e) => handleChange('website', e.target.value)}
+        />
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div className="form-group">
-          <label htmlFor="fullName" className="block text-sm font-medium text-[#555] mb-1.5">
+          <label htmlFor="fullName" className="block text-sm font-medium text-muted-foreground mb-1.5">
             Full Name <span className="text-destructive">*</span>
           </label>
             <Input
               id="fullName"
+              required
               value={form.fullName}
               onChange={(e) => handleChange('fullName', e.target.value)}
-              className="bg-[rgba(100,175,71,0.15)] border-[#d0d0d0] text-[#121212]"
+              className="bg-[rgba(100,175,71,0.15)] text-white focus-visible:ring-1"
               placeholder="Your full name"
             />
         </div>
         <div className="form-group">
-          <label htmlFor="organisation" className="block text-sm font-medium text-[#555] mb-1.5">
+          <label htmlFor="organisation" className="block text-sm font-medium text-muted-foreground mb-1.5">
             Organisation
           </label>
             <Input
               id="organisation"
               value={form.organisation}
               onChange={(e) => handleChange('organisation', e.target.value)}
-              className="bg-[rgba(100,175,71,0.15)] border-[#d0d0d0] text-[#121212]"
+              className="bg-[rgba(100,175,71,0.15)] text-white focus-visible:ring-1"
               placeholder="Your organisation"
             />
         </div>
         <div className="form-group">
-          <label htmlFor="email" className="block text-sm font-medium text-[#555] mb-1.5">
+          <label htmlFor="email" className="block text-sm font-medium text-muted-foreground mb-1.5">
             Email Address <span className="text-destructive">*</span>
           </label>
             <Input
               id="email"
               type="email"
+              required
               value={form.email}
               onChange={(e) => handleChange('email', e.target.value)}
-              className="bg-[rgba(100,175,71,0.15)] border-[#d0d0d0] text-[#121212]"
+              className="bg-[rgba(100,175,71,0.15)] text-white focus-visible:ring-1"
               placeholder="you@example.com"
             />
         </div>
         <div className="form-group">
-          <label htmlFor="phone" className="block text-sm font-medium text-[#555] mb-1.5">
+          <label htmlFor="phone" className="block text-sm font-medium text-muted-foreground mb-1.5">
             Phone Number
           </label>
             <Input
@@ -120,53 +160,64 @@ export function ContactForm() {
               type="tel"
               value={form.phone}
               onChange={(e) => handleChange('phone', e.target.value)}
-              className="bg-[rgba(100,175,71,0.15)] border-[#d0d0d0] text-[#121212]"
+              className="bg-[rgba(100,175,71,0.15)] text-white focus-visible:ring-1"
               placeholder="+254 7XX XXX XXX"
             />
         </div>
         <div className="form-group sm:col-span-2">
-          <label htmlFor="service" className="block text-sm font-medium text-[#555] mb-1.5">
+          <label htmlFor="service" className="block text-sm font-medium text-muted-foreground mb-1.5">
             Service Interested In
           </label>
           <Select value={form.service} onValueChange={(v) => handleChange('service', v ?? '')}>
-            <SelectTrigger className="bg-[rgba(100,175,71,0.15)] border-[#d0d0d0] text-[#121212]">
+            <SelectTrigger id="service" className="bg-[rgba(100,175,71,0.15)] text-white focus-visible:ring-1">
               <SelectValue placeholder="Select a service" />
             </SelectTrigger>
-            <SelectContent className="bg-white border-[#e0e0e0] text-[#121212]">
+            <SelectContent
+              align="start"
+              sideOffset={6}
+              className="bg-surface border border-[--color-border] rounded-lg text-white shadow-[0_8px_30px_rgba(0,0,0,0.4)] p-2 w-[--anchor-width] ring-0"
+            >
+              <SelectItem value="">— None —</SelectItem>
               {serviceDetails.map((svc, i) => (
                 <SelectItem
-                  key={svc.id}
+                  key={svc.slug}
                   value={svc.title}
                   style={{ animationDelay: `${i * 50}ms` }}
-                  className="animate-[fadeInUp_0.3s_ease-out_both]"
+                  className="animate-[fadeInUp_0.3s_ease-out_both] hover:bg-[rgba(255,255,255,0.05)]"
                 >{svc.title}</SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
         <div className="form-group sm:col-span-2">
-          <label htmlFor="message" className="block text-sm font-medium text-[#555] mb-1.5">
+          <label htmlFor="message" className="block text-sm font-medium text-muted-foreground mb-1.5">
             Message <span className="text-destructive">*</span>
           </label>
           <Textarea
             id="message"
+            required
             rows={5}
             value={form.message}
             onChange={(e) => handleChange('message', e.target.value)}
-            className="bg-[rgba(100,175,71,0.15)] border-[#d0d0d0] text-[#121212] resize-none"
+            className="bg-[rgba(100,175,71,0.15)] text-white focus-visible:ring-1 resize-none"
             placeholder="Tell us about your project..."
           />
         </div>
       </div>
 
-      {errorMsg && (
-        <p className="text-sm text-destructive mt-4">{errorMsg}</p>
-      )}
+      <div role="status" aria-live="polite">
+        {errorMsg && (
+          <p className="text-sm text-destructive mt-4">{errorMsg}</p>
+        )}
+        {status === 'sent' && (
+          <p className="text-sm text-primary mt-4">Thank you — your message has been sent. We&apos;ll get back to you shortly.</p>
+        )}
+      </div>
 
       <Button
         type="submit"
         disabled={status === 'sending'}
-        className="mt-6 px-8 py-6 text-base hover:bg-gradient-to-br hover:from-primary hover:to-secondary"
+        className="mt-6 px-8 py-6 text-base transition-transform duration-300 ease-out hover:scale-[1.03] hover:bg-gradient-to-br hover:from-primary hover:to-secondary"
       >
         {status === 'sending' ? 'SENDING...' : status === 'sent' ? 'MESSAGE SENT!' : (
           <>

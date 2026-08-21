@@ -17,8 +17,8 @@ export function AboutCTA() {
           </div>
           <div className="flex-shrink-0">
             <Link href="/services">
-              <Button className="bg-black text-white border-black hover:bg-white hover:text-black hover:border-transparent px-8 py-6 text-base">
-                EXPLORE OUR SERVICES <ArrowRight className="w-4 h-4 ml-2" />
+              <Button className="group bg-black text-white border-black hover:bg-white hover:text-black hover:border-transparent px-8 py-6 text-base">
+                EXPLORE OUR SERVICES <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
               </Button>
             </Link>
           </div>

@@ -1,9 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { contactInfo } from '@/data/constants'
+import { phoneDigits } from '@/data/constants'
 
-const waNumber = contactInfo.phone.replace(/[\s+]/g, '')
+const waNumber = phoneDigits.replace(/\+/g, '')
 
 export function WhatsAppButton() {
   const [visible, setVisible] = useState(false)

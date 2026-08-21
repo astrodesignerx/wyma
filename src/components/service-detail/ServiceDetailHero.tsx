@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { ChevronDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import type { ServicePageData } from '@/types'
+import { useSmoothScroll } from '@/hooks/useSmoothScroll'
 
 const accentIcons: Record<string, React.ReactNode> = {
   'layout-dashboard': (
@@ -27,8 +28,9 @@ const accentIcons: Record<string, React.ReactNode> = {
 }
 
 export function ServiceDetailHero({ data }: { data: ServicePageData }) {
+  const { scrollToSection } = useSmoothScroll()
   return (
-    <section className="relative py-[260px] pb-[330px] bg-[#121212] overflow-hidden">
+    <section className="relative min-h-dvh flex items-center bg-[#121212] overflow-hidden">
       <div className="mx-auto max-w-[900px] px-6 text-center fade-in relative">
         <div
           className="w-14 h-14 rounded-[12px] flex items-center justify-center mb-6 mx-auto"
@@ -45,7 +47,7 @@ export function ServiceDetailHero({ data }: { data: ServicePageData }) {
           {data.heroTagline}
         </p>
         <Link href="/contact">
-          <Button size="lg" className="text-base px-8 py-6 hover:bg-gradient-to-br hover:from-primary hover:to-secondary">
+          <Button size="lg" className="text-base px-8 py-6 transition-transform duration-300 ease-out hover:scale-[1.03] hover:bg-gradient-to-br hover:from-primary hover:to-secondary">
             REQUEST THIS SERVICE
           </Button>
         </Link>
@@ -54,13 +56,7 @@ export function ServiceDetailHero({ data }: { data: ServicePageData }) {
       {/* Scroll Indicator */}
       <button
         onClick={() => {
-          const el = document.getElementById('service-overview')
-          if (el) {
-            const navbar = document.querySelector('nav')
-            const offset = navbar?.offsetHeight ?? 102
-            const target = el.getBoundingClientRect().top + window.scrollY - offset
-            window.scrollTo({ top: target, behavior: 'smooth' })
-          }
+          scrollToSection('service-overview')
         }}
         className="absolute bottom-10 left-1/2 z-[3] flex flex-col items-center gap-1 cursor-pointer animate-float"
         aria-label="Scroll to next section"

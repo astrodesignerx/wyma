@@ -1,8 +1,10 @@
 'use client'
 
 import { ChevronDown } from 'lucide-react'
+import { useSmoothScroll } from '@/hooks/useSmoothScroll'
 
 export function ResourcesHero() {
+  const { scrollToSection } = useSmoothScroll()
   return (
     <section className="relative py-[300px] pb-[220px] text-center bg-[#f5f5f5] overflow-hidden">
       <div className="mx-auto max-w-[1200px] px-6 fade-in relative">
@@ -24,24 +26,7 @@ export function ResourcesHero() {
       {/* Scroll Indicator */}
       <button
         onClick={() => {
-          const el = document.getElementById('stats')
-          if (el) {
-            const navbar = document.querySelector('nav')
-            const offset = navbar?.offsetHeight ?? 102
-            const target = el.getBoundingClientRect().top + window.scrollY - offset
-            const start = window.scrollY
-            const distance = target - start
-            const duration = 900
-            const startTime = performance.now()
-            const ease = (t: number) => 1 - Math.pow(1 - t, 3)
-            function scroll(t: number) {
-              const elapsed = t - startTime
-              const progress = Math.min(elapsed / duration, 1)
-              window.scrollTo(0, start + distance * ease(progress))
-              if (progress < 1) requestAnimationFrame(scroll)
-            }
-            requestAnimationFrame(scroll)
-          }
+          scrollToSection('stats')
         }}
         className="absolute bottom-10 left-1/2 z-[3] flex flex-col items-center gap-1 cursor-pointer animate-float"
         aria-label="Scroll to next section"

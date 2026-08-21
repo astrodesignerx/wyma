@@ -4,28 +4,21 @@ import { useRef, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ArrowRight, ChevronDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { useSmoothScroll } from '@/hooks/useSmoothScroll'
 
-const videoSources = [
-  '/videos/slideshow-1.webm',
-  '/videos/slideshow-2.webm',
-  '/videos/slideshow-3.webm',
-  '/videos/slideshow-4.webm',
-]
+const videoBasenames = ['slideshow-1', 'slideshow-2', 'slideshow-3', 'slideshow-4']
 const SLOT = 8000
 const FADE = 1500
 
 export function HeroSection() {
-  const vid0Ref = useRef<HTMLVideoElement>(null!)
-  const vid1Ref = useRef<HTMLVideoElement>(null!)
-  const vid2Ref = useRef<HTMLVideoElement>(null!)
-  const vid3Ref = useRef<HTMLVideoElement>(null!)
+  const { scrollToSection } = useSmoothScroll()
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([])
 
   const cycleRef = useRef({
     currentIdx: 0,
     timerId: 0 as unknown as ReturnType<typeof setTimeout>,
   })
-  const [[f0, f1, f2, f3], setFade] = useState<number[]>([1, 0, 0, 0])
-  const [, setTick] = useState(0)
+  const [fade, setFade] = useState<number[]>([1, 0, 0, 0])
   const mounted = useRef(false)
 
   useEffect(() => {
@@ -33,34 +26,37 @@ export function HeroSection() {
     mounted.current = true
 
     const cr = cycleRef.current
-    const players = [vid0Ref.current, vid1Ref.current, vid2Ref.current, vid3Ref.current]
+    const players = videoRefs.current
 
-    players.forEach((v, i) => {
-      v.src = videoSources[i]
-      v.muted = true
-      v.playsInline = true
-      v.load()
-    })
+    // Only the first video preloads; the rest are fetched just-in-time,
+    // one slot (~6.5s) before they are shown, to keep initial page weight down.
+    function ensureLoaded(v: HTMLVideoElement) {
+      if (v.dataset.loaded !== 'true') {
+        v.dataset.loaded = 'true'
+        v.load()
+      }
+    }
 
-    vid0Ref.current.play().catch(() => {})
+    players[0]?.play().catch(() => {})
 
     function cycle() {
-      const nextIdx = (cr.currentIdx + 1) % videoSources.length
+      const nextIdx = (cr.currentIdx + 1) % videoBasenames.length
       const nextPlayer = players[nextIdx]
+      if (!nextPlayer) return
 
-      nextPlayer.currentTime = 0
+      ensureLoaded(nextPlayer)
+      if (nextPlayer.readyState > 0) nextPlayer.currentTime = 0
 
       cr.timerId = setTimeout(() => {
         const newFade = [0, 0, 0, 0]
         newFade[nextIdx] = 1
-        setFade([...newFade])
+        setFade(newFade)
 
         nextPlayer.play().catch(() => {})
 
         cr.timerId = setTimeout(() => {
-          players[cr.currentIdx].pause()
+          players[cr.currentIdx]?.pause()
           cr.currentIdx = nextIdx
-          setTick((t) => t + 1)
           cycle()
         }, FADE)
       }, SLOT - FADE)
@@ -79,38 +75,22 @@ export function HeroSection() {
     <section className={`relative min-h-dvh flex items-center overflow-hidden ${sectionBg}`}>
       {/* Video slideshow layer */}
       <div className="absolute inset-0 z-0">
-        <video
-          ref={vid0Ref}
-          muted
-          playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms]"
-          style={{ opacity: f0 }}
-        />
-        <video
-          ref={vid1Ref}
-          muted
-          playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms]"
-          style={{ opacity: f1 }}
-        />
-        <video
-          ref={vid2Ref}
-          muted
-          playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms]"
-          style={{ opacity: f2 }}
-        />
-        <video
-          ref={vid3Ref}
-          muted
-          playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms]"
-          style={{ opacity: f3 }}
-        />
+        {videoBasenames.map((name, i) => (
+          <video
+            key={name}
+            ref={(el) => { videoRefs.current[i] = el }}
+            muted
+            playsInline
+            loop
+            preload={i === 0 ? 'auto' : 'none'}
+            poster="/images/hero-bg.jpg"
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms]"
+            style={{ opacity: fade[i] }}
+          >
+            <source src={`/videos/${name}.webm`} type="video/webm" />
+            <source src={`/videos/${name}.mp4`} type="video/mp4" />
+          </video>
+        ))}
       </div>
 
       {/* Dark overlay */}
@@ -156,11 +136,11 @@ export function HeroSection() {
             We help organisations in Kenya strengthen strategy, improve performance, and deliver measurable impact.
           </p>
           <Link href="/services">
-            <Button size="lg" className="group relative overflow-hidden text-base px-8 py-6">
+            <Button size="lg" className="group relative overflow-hidden text-base px-8 py-6 transition-transform duration-300 ease-out hover:scale-[1.03]">
               <span className="absolute inset-0 bg-gradient-to-br from-primary to-secondary opacity-0 transition-opacity duration-1000 group-hover:opacity-100 pointer-events-none" />
               <span className="relative z-10 inline-flex items-center gap-2">
                 Explore Our Services
-                <ArrowRight className="w-4 h-4 transition-all duration-1000 group-hover:translate-x-1" />
+                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
               </span>
             </Button>
           </Link>
@@ -170,24 +150,7 @@ export function HeroSection() {
       {/* Scroll Indicator */}
       <button
         onClick={() => {
-          const el = document.getElementById('about-snippet')
-          if (el) {
-            const navbar = document.querySelector('nav')
-            const offset = navbar?.offsetHeight ?? 102
-            const target = el.getBoundingClientRect().top + window.scrollY - offset
-            const start = window.scrollY
-            const distance = target - start
-            const duration = 900
-            const startTime = performance.now()
-            const ease = (t: number) => 1 - Math.pow(1 - t, 3)
-            function scroll(t: number) {
-              const elapsed = t - startTime
-              const progress = Math.min(elapsed / duration, 1)
-              window.scrollTo(0, start + distance * ease(progress))
-              if (progress < 1) requestAnimationFrame(scroll)
-            }
-            requestAnimationFrame(scroll)
-          }
+          scrollToSection('about-snippet')
         }}
         className="absolute bottom-10 left-1/2 z-[3] flex flex-col items-center gap-1 cursor-pointer animate-float"
         aria-label="Scroll to next section"

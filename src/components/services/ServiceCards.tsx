@@ -61,15 +61,6 @@ const iconMap: Record<string, React.ReactNode> = {
 function Card({ svc, cfg, index }: { svc: typeof serviceDetails[number]; cfg: typeof accentConfig[string]; index: number }) {
   const [pos, setPos] = useState({ x: 50, y: 50 })
 
-  const serviceRouteMap: Record<string, string> = {
-    'strategy-operations-organizational-development': '/services/strategy-operations-organizational-development',
-    'research-market-intelligence': '/services/research-market-intelligence',
-    'monitoring-evaluation': '/services/monitoring-evaluation-me',
-    'entrepreneurship-business-development': '/services/entrepreneurship-business-development',
-    'training-capacity-building': '/services/training-capacity-building',
-    'risk-governance': '/services/risk-governance-value-assessments',
-  }
-
   return (
     <div
       className={`group relative rounded-xl p-6 border border-[--color-card-border] bg-surface overflow-hidden transition-all duration-300 hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)] flex flex-col fade-in-scale delay-${index + 1}`}
@@ -105,9 +96,9 @@ function Card({ svc, cfg, index }: { svc: typeof serviceDetails[number]; cfg: ty
         </div>
         <h3 className="font-heading text-base font-semibold text-white mb-2 flex-shrink-0">{svc.title}</h3>
         <p className="text-sm text-muted-foreground leading-relaxed flex-1 mb-3">{svc.description}</p>
-                  <Link href={serviceRouteMap[svc.id] || '/contact'}>
-          <Button size="sm" className="self-start flex-shrink-0 text-xs px-3 py-1.5 hover:brightness-110" style={{ backgroundColor: cfg.iconColor }}>
-            Learn More <ArrowRight className="w-3 h-3 ml-1" />
+        <Link href={`/services/${svc.slug}`} className="self-start">
+          <Button size="sm" className="group flex-shrink-0 text-xs px-3 py-1.5 hover:brightness-110" style={{ backgroundColor: cfg.iconColor }}>
+            Learn More <ArrowRight className="w-3 h-3 ml-1 transition-transform duration-300 group-hover:translate-x-1" />
           </Button>
         </Link>
       </div>
@@ -128,7 +119,7 @@ export function ServiceCards() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {serviceDetails.map((svc, i) => {
             const cfg = accentConfig[svc.accent]
-            return <Card key={svc.id} svc={svc} cfg={cfg} index={i} />
+            return <Card key={svc.slug} svc={svc} cfg={cfg} index={i} />
           })}
         </div>
       </div>

@@ -1,6 +1,7 @@
-import type { ServiceItem, StatItem, AdvantageItem, TeamMember, FAQItem, ServiceDetail, StepItem, ServicePageData } from '@/types'
+import type { ServiceItem, StatItem, AdvantageItem, TeamMember, FAQItem, StepItem, ServicePageData } from '@/types'
 
 export const siteName = 'WYMA New Frontiers'
+export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.wyma-newfrontiers.com'
 export const siteTagline = 'Strategic leadership and innovation consulting for the East African frontier.'
 
 export const navLinks = [
@@ -38,42 +39,42 @@ export const serviceDropdownItems: { href: string; label: string; description: s
 
 export const services: ServiceItem[] = [
   {
-    id: 'strategy',
+    slug: 'strategy-operations-organizational-development',
     title: 'Strategy & Operations',
     description: 'Organisational development, strategic planning, operational efficiency, and change management for sustained growth.',
     icon: 'layout-dashboard',
     accent: 'primary',
   },
   {
-    id: 'research',
+    slug: 'research-market-intelligence',
     title: 'Research & Intelligence',
     description: 'Market research, surveys, labour market analysis, value chain analysis, and data systems for informed decision-making.',
     icon: 'search',
     accent: 'secondary',
   },
   {
-    id: 'me',
+    slug: 'monitoring-evaluation-me',
     title: 'Monitoring & Evaluation',
     description: 'Baseline studies, mid-term and end-line evaluations, project monitoring systems, and performance reporting.',
     icon: 'clipboard-list',
     accent: 'accent',
   },
   {
-    id: 'entrepreneurship',
+    slug: 'entrepreneurship-business-development',
     title: 'Entrepreneurship',
     description: 'ILO-SIYB programs, SME advisory, digital transformation support, and structured business development services.',
     icon: 'lightbulb',
     accent: 'primary',
   },
   {
-    id: 'training',
+    slug: 'training-capacity-building',
     title: 'Training & Capacity Building',
     description: 'Customised training programs, leadership development, technical assistance, and institutional capacity strengthening.',
     icon: 'graduation-cap',
     accent: 'secondary',
   },
   {
-    id: 'risk',
+    slug: 'risk-governance-value-assessments',
     title: 'Risk & Governance',
     description: 'Risk assessment, governance audits, feasibility studies, and value-for-money analysis for prudent decision-making.',
     icon: 'shield',
@@ -81,54 +82,48 @@ export const services: ServiceItem[] = [
   },
 ]
 
-export const serviceDetails: ServiceDetail[] = [
+export const serviceDetails: ServiceItem[] = [
   {
-    id: 'strategy-operations-organizational-development',
     title: 'Strategy, Operations & Organisational Development',
     description: 'Comprehensive strategic planning, operational restructuring, and organisational development to enhance institutional effectiveness and drive sustainable growth.',
     icon: 'layout-dashboard',
     accent: 'primary',
-    href: '#strategy-operations-organizational-development',
+    slug: 'strategy-operations-organizational-development',
   },
   {
-    id: 'research-market-intelligence',
     title: 'Research & Market Intelligence',
     description: 'In-depth market research, labour market analysis, value chain assessments, and data-driven intelligence systems that inform strategic decision-making.',
     icon: 'search',
     accent: 'secondary',
-    href: '#research-market-intelligence',
+    slug: 'research-market-intelligence',
   },
   {
-    id: 'monitoring-evaluation',
     title: 'Monitoring & Evaluation',
     description: 'Rigorous baseline studies, mid-term and end-line evaluations, project monitoring frameworks, and comprehensive performance reporting.',
     icon: 'clipboard-list',
     accent: 'accent',
-    href: '#monitoring-evaluation',
+    slug: 'monitoring-evaluation-me',
   },
   {
-    id: 'entrepreneurship-business-development',
     title: 'Entrepreneurship & Business Development',
     description: 'ILO-SIYB certified programs, SME advisory services, digital transformation support, and structured business development solutions.',
     icon: 'lightbulb',
     accent: 'primary',
-    href: '#entrepreneurship-business-development',
+    slug: 'entrepreneurship-business-development',
   },
   {
-    id: 'training-capacity-building',
     title: 'Training & Capacity Building',
     description: 'Customised training programs, leadership development initiatives, technical assistance, and institutional capacity strengthening for lasting impact.',
     icon: 'graduation-cap',
     accent: 'secondary',
-    href: '#training-capacity-building',
+    slug: 'training-capacity-building',
   },
   {
-    id: 'risk-governance',
     title: 'Risk, Governance & Value Assessments',
     description: 'Risk assessment frameworks, governance audits, feasibility studies, and value-for-money analysis enabling prudent and transparent decision-making.',
     icon: 'shield',
     accent: 'danger',
-    href: '#risk-governance',
+    slug: 'risk-governance-value-assessments',
   },
 ]
 
@@ -169,7 +164,7 @@ export const stats: StatItem[] = [
   { target: 10, suffix: '+', label: 'Years of Experience', accent: 'primary' },
   { target: 50, suffix: '+', label: 'Projects Delivered', accent: 'secondary' },
   { target: 80, suffix: '+', label: 'Clients Served', accent: 'accent' },
-  { target: 20, suffix: '', label: 'Counties Covered', accent: 'danger' },
+  { target: 47, suffix: '', label: 'Counties Covered', accent: 'danger' },
 ]
 
 export const advantages: AdvantageItem[] = [
@@ -235,17 +230,26 @@ export const faqs: FAQItem[] = [
   },
 ]
 
-export const marqueeClients = [
-  'Ministry of Health', 'USAID', 'World Bank', 'County Gov. of Nairobi',
-  'UNDP', 'KCB Group', 'UNICEF', 'Equity Bank',
-]
-
+// TODO(launch-blocker): replace with the real business phone number before go-live.
+// This value drives the WhatsApp button, tel: links, footer, and contact page.
 export const contactInfo = {
   address: 'Rehema House, Kaunda Street, Nairobi, Kenya',
   phone: '+254 700 000 000',
   email: 'info@wyma-newfrontiers.com',
-  hours: 'Mon — Fri: 8:00 AM — 5:00 PM',
+  hours: 'Mon – Fri: 8:00 AM – 5:00 PM',
 }
+
+/** Digits-only phone for tel:/wa.me hrefs (spaces are invalid in tel: URIs). */
+export const phoneDigits = contactInfo.phone.replace(/[^\d+]/g, '')
+
+// Social profiles: leave url empty until the real profile exists — entries
+// without a url are not rendered, so no dead "#" links ship to production.
+export const socialProfiles: { label: string; icon: string; url: string }[] = [
+  { label: 'LinkedIn', icon: 'linkedin', url: '' },
+  { label: 'Twitter', icon: 'twitter', url: '' },
+  { label: 'Facebook', icon: 'facebook', url: '' },
+  { label: 'YouTube', icon: 'youtube', url: '' },
+]
 
 export const footerQuickLinks = [
   { href: '/', label: 'Home' },
@@ -257,10 +261,10 @@ export const footerQuickLinks = [
 export const footerServicesLinks = [
   { href: '/services/strategy-operations-organizational-development', label: 'Strategy & Development' },
   { href: '/services/research-market-intelligence', label: 'Research & Intelligence' },
-  { href: '/services/monitoring-evaluation-me', label: 'M&amp;E' },
+  { href: '/services/monitoring-evaluation-me', label: 'M&E' },
   { href: '/services/entrepreneurship-business-development', label: 'Entrepreneurship' },
-  { href: '/services/training-capacity-building', label: 'Training &amp; Capacity Building' },
-  { href: '/services/risk-governance-value-assessments', label: 'Risk &amp; Governance' },
+  { href: '/services/training-capacity-building', label: 'Training & Capacity Building' },
+  { href: '/services/risk-governance-value-assessments', label: 'Risk & Governance' },
 ]
 
 export const servicePageData: ServicePageData[] = [
@@ -270,6 +274,7 @@ export const servicePageData: ServicePageData[] = [
     shortTitle: 'Strategy, Operations & Organisational Development',
     heroTagline: 'Strengthening organisations through robust strategic planning, governance frameworks, and operational excellence.',
     overview: 'Our Strategy, Operations & Organisational Development practice helps organisations design and implement robust strategies that drive sustainable growth. We work with leadership teams to clarify vision, align operations, and build the institutional capacity needed to execute effectively. From governance reviews and policy development to organisational capacity assessments and sustainability frameworks, we provide the analytical rigor and hands-on support that transforms strategic intent into measurable results.',
+    overviewImage: 'https://images.pexels.com/photos/7693692/pexels-photo-7693692.jpeg?auto=compress&cs=tinysrgb&w=800',
     accent: 'primary',
     icon: 'layout-dashboard',
     offerings: [
@@ -286,6 +291,7 @@ export const servicePageData: ServicePageData[] = [
     shortTitle: 'Research & Market Intelligence',
     heroTagline: 'Data-driven insights and market analysis to power strategic decision-making and business growth.',
     overview: 'Our Research & Market Intelligence practice delivers data-driven insights that inform strategic decisions and unlock new opportunities. We combine rigorous research methodologies with deep sectoral expertise to produce actionable intelligence. Whether you need market sizing, competitor analysis, labour market studies, or value chain mapping, our team provides the evidence base your organisation needs to make confident, informed decisions.',
+    overviewImage: 'https://images.pexels.com/photos/7054416/pexels-photo-7054416.jpeg?auto=compress&cs=tinysrgb&w=800',
     accent: 'secondary',
     icon: 'search',
     offerings: [
@@ -302,6 +308,7 @@ export const servicePageData: ServicePageData[] = [
     shortTitle: 'Monitoring & Evaluation',
     heroTagline: 'Comprehensive M&E frameworks that track performance, demonstrate impact, and drive continuous improvement.',
     overview: 'Our Monitoring & Evaluation practice helps organisations build robust systems for tracking progress, measuring impact, and ensuring accountability. We design and implement M&E frameworks that are practical, rigorous, and aligned with international best practices. From baseline studies and mid-term reviews to end-line evaluations and real-time monitoring systems, we provide the tools and expertise needed to demonstrate measurable outcomes to stakeholders and funders.',
+    overviewImage: 'https://images.pexels.com/photos/35353303/pexels-photo-35353303.jpeg?auto=compress&cs=tinysrgb&w=800',
     accent: 'accent',
     icon: 'clipboard-list',
     offerings: [
@@ -318,6 +325,7 @@ export const servicePageData: ServicePageData[] = [
     shortTitle: 'Entrepreneurship & Business Development',
     heroTagline: 'Empowering entrepreneurs and SMEs with the tools, training, and advisory support to build thriving businesses.',
     overview: 'Our Entrepreneurship & Business Development practice empowers entrepreneurs and small businesses with the knowledge, tools, and support systems needed to start, grow, and sustain successful enterprises. As certified ILO-SIYB trainers, we deliver internationally recognised entrepreneurship development programmes alongside tailored SME advisory services, digital transformation support, and structured business development interventions.',
+    overviewImage: 'https://images.pexels.com/photos/5934218/pexels-photo-5934218.jpeg?auto=compress&cs=tinysrgb&w=800',
     accent: 'primary',
     icon: 'lightbulb',
     offerings: [
@@ -334,6 +342,7 @@ export const servicePageData: ServicePageData[] = [
     shortTitle: 'Training & Capacity Building',
     heroTagline: 'Tailored training programmes that equip teams and organisations with the skills needed for excellence.',
     overview: 'Our Training & Capacity Building practice designs and delivers customised learning programmes that strengthen institutional and individual capacity. We take an evidence-based approach, starting with thorough needs assessments and ending with impact evaluation. Our facilitators bring deep subject matter expertise and adult learning methodologies to create engaging, practical training experiences that drive real behavioural change and organisational improvement.',
+    overviewImage: 'https://images.pexels.com/photos/18999470/pexels-photo-18999470.jpeg?auto=compress&cs=tinysrgb&w=800',
     accent: 'secondary',
     icon: 'graduation-cap',
     offerings: [
@@ -350,6 +359,7 @@ export const servicePageData: ServicePageData[] = [
     shortTitle: 'Risk, Governance & Value Assessments',
     heroTagline: 'Strengthening governance frameworks and mitigating risk for organisational resilience and accountability.',
     overview: 'Our Risk, Governance & Value Assessments practice helps organisations build resilient governance structures, manage risk effectively, and ensure value for money in their operations and investments. We provide independent, evidence-based assessments that strengthen accountability, improve compliance, and enhance organisational decision-making. Our approach combines international best practices with deep understanding of the Kenyan regulatory and business environment.',
+    overviewImage: 'https://images.pexels.com/photos/6949364/pexels-photo-6949364.jpeg?auto=compress&cs=tinysrgb&w=800',
     accent: 'danger',
     icon: 'shield',
     offerings: [

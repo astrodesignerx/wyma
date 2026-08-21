@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { services } from '@/data/constants'
 
 const accentColors: Record<string, { border: string; glow: string }> = {
@@ -56,9 +57,10 @@ export function ServicesGrid() {
           {services.map((svc, i) => {
             const colors = accentColors[svc.accent]
             return (
-              <div
-                key={svc.id}
-                className={`group relative rounded-xl p-8 border border-[--color-card-border] bg-surface overflow-hidden transition-all duration-500 hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)] hover:[transform:perspective(800px)_rotateY(-2deg)_rotateX(1deg)] fade-in-scale delay-${i + 1}`}
+              <Link
+                key={svc.slug}
+                href={`/services/${svc.slug}`}
+                className={`group relative block no-underline rounded-xl p-8 border border-[--color-card-border] bg-surface overflow-hidden transition-all duration-500 hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)] hover:[transform:perspective(800px)_rotateY(-2deg)_rotateX(1deg)] motion-reduce:transition-none motion-reduce:hover:transform-none fade-in-scale delay-${i + 1}`}
               >
                 {/* Hover glow */}
                 <div
@@ -76,8 +78,15 @@ export function ServicesGrid() {
                   </div>
                   <h3 className="font-heading text-lg font-semibold text-white mb-3">{svc.title}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed flex-1">{svc.description}</p>
+                  <span
+                    className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium opacity-0 -translate-x-1 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:translate-x-0 group-focus-visible:opacity-100 group-focus-visible:translate-x-0 motion-reduce:transition-none motion-reduce:translate-x-0"
+                    style={{ color: iconColors[svc.accent] }}
+                  >
+                    Learn more
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                  </span>
                 </div>
-              </div>
+              </Link>
             )
           })}
         </div>

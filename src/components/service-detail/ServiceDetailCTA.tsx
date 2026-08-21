@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 
 export function ServiceDetailCTA() {
   return (
-    <section className="py-24">
+    <section className="py-24 bg-[#f5f5f5]">
       <div className="mx-auto max-w-[1200px] px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8 p-10 md:p-16 rounded-xl bg-gradient-to-br from-primary to-secondary fade-in">
           <div className="flex-1">
@@ -22,8 +22,8 @@ export function ServiceDetailCTA() {
               </Button>
             </Link>
             <Link href="/services">
-              <Button className="bg-transparent border-black text-black hover:bg-black/10 px-8 py-6 text-base">
-                <ArrowRight className="w-4 h-4 mr-2" /> VIEW ALL SERVICES
+              <Button className="group bg-transparent border-black text-black hover:bg-black/10 px-8 py-6 text-base">
+                <ArrowRight className="w-4 h-4 mr-2 transition-transform duration-300 group-hover:translate-x-1" /> VIEW ALL SERVICES
               </Button>
             </Link>
           </div>

@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import { ChevronUp } from 'lucide-react'
+import { useSmoothScroll } from '@/hooks/useSmoothScroll'
 
 export function BackToTop() {
   const [visible, setVisible] = useState(false)
+  const { scrollToTop } = useSmoothScroll()
 
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 300)
@@ -14,8 +16,8 @@ export function BackToTop() {
 
   return (
     <button
-      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-      className={`fixed bottom-8 right-8 z-50 w-11 h-11 rounded-lg bg-primary text-white flex items-center justify-center shadow-[0_4px_15px_rgba(100,175,71,0.4)] hover:bg-gradient-to-br hover:from-primary hover:to-secondary hover:shadow-[0_4px_20px_rgba(100,175,71,0.6)] ${
+      onClick={scrollToTop}
+      className={`fixed bottom-8 right-8 z-50 w-11 h-11 rounded-lg bg-primary text-white flex items-center justify-center shadow-[0_4px_15px_rgba(100,175,71,0.4)] hover:bg-gradient-to-br hover:from-primary hover:to-secondary hover:shadow-[0_4px_20px_rgba(100,175,71,0.6)] transition-transform duration-300 ease-out hover:scale-110 ${
         visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
       }`}
       aria-label="Back to top"

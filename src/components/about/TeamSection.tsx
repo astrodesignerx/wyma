@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { teamMembers } from '@/data/constants'
 
 export function TeamSection() {
@@ -24,11 +25,13 @@ export function TeamSection() {
                 }}
               />
               <div className="relative z-[1]">
-                <div className="w-full h-[360px] overflow-hidden">
-                    <img
+                <div className="relative w-full h-[360px] overflow-hidden">
+                    <Image
                       src={m.image}
                       alt={m.name}
-                      className="w-full h-full object-cover object-top transition-all duration-700 grayscale group-hover:grayscale-0"
+                      fill
+                      sizes="(min-width: 768px) 33vw, 100vw"
+                      className="object-cover object-top transition-all duration-700 grayscale group-hover:grayscale-0"
                     />
                 </div>
                 <div className="p-6">

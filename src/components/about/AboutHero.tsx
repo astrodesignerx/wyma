@@ -3,8 +3,10 @@
 import { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { useHeroLight } from '@/context/HeroLightContext'
+import { useSmoothScroll } from '@/hooks/useSmoothScroll'
 
 export function AboutHero() {
+  const { scrollToSection } = useSmoothScroll()
   const { setLight } = useHeroLight()
   const [localLight, setLocalLight] = useState(true)
   const [scrolled, setScrolled] = useState(false)
@@ -97,24 +99,7 @@ export function AboutHero() {
               setLocalLight(false)
               setLight(false)
             }
-            const el = document.getElementById('who-we-are')
-            if (el) {
-              const navbar = document.querySelector('nav')
-              const offset = navbar?.offsetHeight ?? 102
-              const target = el.getBoundingClientRect().top + window.scrollY - offset
-              const start = window.scrollY
-              const distance = target - start
-              const duration = 900
-              const startTime = performance.now()
-              const ease = (t: number) => 1 - Math.pow(1 - t, 3)
-              function scroll(t: number) {
-                const elapsed = t - startTime
-                const progress = Math.min(elapsed / duration, 1)
-                window.scrollTo(0, start + distance * ease(progress))
-                if (progress < 1) requestAnimationFrame(scroll)
-              }
-              requestAnimationFrame(scroll)
-            }
+            scrollToSection('who-we-are')
           }}
           className="absolute bottom-0 left-1/2 z-[3] flex flex-col items-center gap-1 cursor-pointer animate-float transition-opacity duration-1000"
           style={{ opacity: loaded && !scrolled ? 1 : 0 }}

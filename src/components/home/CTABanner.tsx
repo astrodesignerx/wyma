@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 
 export function CTABanner() {
   return (
-    <section className="py-24 bg-[#f5f5f5]" id="cta-banner">
+    <section className="py-24" id="cta-banner">
       <div className="mx-auto max-w-[1200px] px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8 p-10 md:p-16 rounded-xl bg-gradient-to-br from-primary to-secondary fade-in">
           <div className="flex-1">
@@ -17,8 +17,8 @@ export function CTABanner() {
           </div>
           <div className="flex-shrink-0">
             <Link href="/services">
-              <Button className="bg-black text-white border-black hover:bg-white hover:text-black hover:border-transparent px-8 py-6 text-base">
-                EXPLORE OUR SERVICES <ArrowRight className="w-4 h-4 ml-2" />
+              <Button className="group bg-black text-white border-black hover:bg-white hover:text-black hover:border-transparent px-8 py-6 text-base transition-transform duration-300 ease-out hover:scale-[1.03]">
+                EXPLORE OUR SERVICES <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
               </Button>
             </Link>
           </div>

@@ -32,7 +32,7 @@ export function StatsSection() {
     <section className="py-24 bg-[#f5f5f5]" id="stats">
       <div className="mx-auto max-w-[1200px] px-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {stats.map((stat, i) => (
+          {stats.map((stat) => (
             <StatItemComponent key={stat.label} {...stat} />
           ))}
         </div>
